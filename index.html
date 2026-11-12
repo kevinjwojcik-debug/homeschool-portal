@@ -1,0 +1,2310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Homeschool Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Inter:wght@400;500;600;700&amp;family=Zilla&#43;Slab:wght@600;700&amp;display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      transition: background 0.25s, color 0.25s;
+    }
+
+     
+    body.theme-ash {
+      --bg-main: #fff0f6;
+      --bg-pattern: radial-gradient(#ffc2d9 1.5px, transparent 1.5px);
+      --panel-bg: #ffffff;
+      --card-bg: #fff9fb;
+      --border-col: #ff9ebb;
+      --accent-primary: #ff3385;
+      --accent-secondary: #ff80b3;
+      --accent-badge: #ffe0ec;
+      --text-primary: #591c36;
+      --text-muted: #9e5876;
+      --success-bg: #d8f8e1;
+      --success-text: #116b2f;
+      --font-heading: 'Fredoka', sans-serif;
+      background-color: var(--bg-main);
+      background-image: var(--bg-pattern);
+      background-size: 22px 22px;
+      color: var(--text-primary);
+    }
+
+     
+    body.theme-nolan {
+      --bg-main: #f2ede2;
+      --bg-pattern: radial-gradient(#d5ccb6 1.5px, transparent 1.5px);
+      --panel-bg: #faf7f0;
+      --card-bg: #ffffff;
+      --border-col: #8c7a5b;
+      --accent-primary: #1b4d3e;
+      --accent-secondary: #b86b28;
+      --accent-badge: #e2dec9;
+      --text-primary: #1f2e27;
+      --text-muted: #5a6b5c;
+      --success-bg: #d1fae5;
+      --success-text: #065f46;
+      --font-heading: 'Zilla Slab', serif;
+      background-color: var(--bg-main);
+      background-image: var(--bg-pattern);
+      background-size: 24px 24px;
+      color: var(--text-primary);
+    }
+
+     
+    body.theme-admin {
+      --bg-main: #f1f5f9;
+      --panel-bg: #ffffff;
+      --card-bg: #ffffff;
+      --border-col: #cbd5e1;
+      --accent-primary: #1e40af;
+      --accent-secondary: #0284c7;
+      --accent-badge: #e0f2fe;
+      --text-primary: #0f172a;
+      --text-muted: #64748b;
+      --success-bg: #dcfce7;
+      --success-text: #166534;
+      --font-heading: 'Inter', sans-serif;
+      background-color: var(--bg-main);
+
+      color: var(--text-primary);
+
+    }
+
+     
+    .portal-header {
+
+      background: var(--panel-bg);
+      border-bottom: 3px solid var(--border-col);
+
+      padding: 8px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+
+
+      align-items: center;
+      gap: 10px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .brand-title {
+      font-family: var(--font-heading);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--accent-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-sub {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+     
+    .selector-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .control-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    select,
+    input,
+    textarea {
+      background: var(--card-bg);
+      color: var(--text-primary);
+      border: 2px solid var(--border-col);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 600;
+      outline: none;
+    }
+
+    select:focus,
+    input:focus,
+    textarea:focus {
+      border-color: var(--accent-primary);
+    }
+
+    .btn {
+      background: var(--accent-primary);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      padding: 9px 15px;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.1s, opacity 0.15s;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      opacity: 0.92;
+      transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background: var(--accent-badge);
+      color: var(--text-primary);
+      border: 2px solid var(--border-col);
+    }
+
+    .btn-success {
+      background: #16a34a;
+      color: #ffffff;
+    }
+
+    .btn-amber {
+      background: #d97706;
+      color: #ffffff;
+    }
+
+    .btn-exam-toggle {
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      color: #ffffff;
+      box-shadow: 0 3px 10px rgba(79, 70, 229, 0.28);
+    }
+
+    .btn-exam-toggle.active-exam {
+      background: #0f172a;
+      border: 2px solid #7c3aed;
+    }
+
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+     
+    .student-workspace {
+      display: grid;
+      grid-template-columns: 1.55fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    @media (max-width: 1024px) {
+      .student-workspace {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel {
+      background: var(--panel-bg);
+      border: 2px solid var(--border-col);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+    }
+
+    .panel-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+      border-bottom: 2px dashed var(--border-col);
+    }
+
+    .panel-title {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--accent-primary);
+      margin: 0;
+    }
+
+     
+    .day-strip {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .day-pill {
+      padding: 10px 8px;
+      border-radius: 10px;
+      border: 2px solid var(--border-col);
+      background: var(--card-bg);
+      text-align: center;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.84rem;
+      transition: all 0.15s;
+    }
+
+    .day-pill.active {
+      background: var(--accent-primary);
+      color: #ffffff;
+      border-color: var(--accent-primary);
+    }
+
+    .day-pill.done-day {
+      background: var(--success-bg);
+      color: var(--success-text);
+      border-color: #16a34a;
+    }
+
+    .day-pill.done-day.active {
+      box-shadow: 0 0 0 3px var(--accent-primary);
+    }
+
+     
+    .mode-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .mode-tab {
+      padding: 9px 16px;
+      border-radius: 99px;
+      border: 2px solid var(--border-col);
+      background: var(--card-bg);
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+
+    .mode-tab.active {
+      background: var(--accent-primary);
+      color: #ffffff;
+      border-color: var(--accent-primary);
+    }
+
+     
+    .large-viewport {
+      background: var(--card-bg);
+      border: 2px solid var(--border-col);
+      border-radius: 12px;
+      padding: 20px;
+      min-height: 460px;
+      max-height: 620px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      font-size: 0.98rem;
+      line-height: 1.68;
+    }
+
+    .daily-focus-banner {
+      background: var(--accent-badge);
+      border-left: 5px solid var(--accent-primary);
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      font-weight: 600;
+    }
+
+     
+    .tutor-window {
+      background: var(--card-bg);
+      border: 2px solid var(--border-col);
+      border-radius: 12px;
+      padding: 14px;
+      min-height: 220px;
+      max-height: 320px;
+      overflow-y: auto;
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .chat-bubble {
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .chat-tutor {
+      background: var(--accent-badge);
+      border: 1px solid var(--border-col);
+      align-self: flex-start;
+    }
+
+    .chat-student {
+      background: var(--accent-primary);
+      color: #ffffff;
+      align-self: flex-end;
+    }
+
+     
+    .admin-grid-top {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+
+    .matrix-table th,
+    .matrix-table td {
+      border-bottom: 1px solid var(--border-col);
+      padding: 10px 8px;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    .matrix-table th {
+      background: #f8fafc;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.74rem;
+    }
+
+    .status-chip {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 99px;
+      font-weight: 700;
+      font-size: 0.75rem;
+    }
+
+    .chip-done {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .chip-missing {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .chip-warn {
+      background: #fef9c3;
+      color: #854d0e;
+    }
+
+    .day-dot {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      margin-right: 3px;
+      cursor: pointer;
+      border: 1px solid #cbd5e1;
+    }
+
+    .day-dot.is-done {
+      background: #16a34a;
+      color: #ffffff;
+      border-color: #15803d;
+    }
+
+    .day-dot.is-missing {
+      background: #f1f5f9;
+      color: #64748b;
+    }
+
+     
+    .exam-course-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .exam-course-pill {
+      padding: 10px 16px;
+      border-radius: 12px;
+      border: 2px solid var(--border-col);
+      background: var(--panel-bg);
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .exam-course-pill.active {
+      background: var(--accent-primary);
+      color: #ffffff;
+      border-color: var(--accent-primary);
+    }
+
+    .exam-unit-card {
+      background: var(--card-bg);
+      border: 2px solid var(--border-col);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+    }
+
+    .exam-q-card {
+      background: var(--card-bg);
+      border: 2px solid var(--border-col);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .exam-opt-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 10px 14px;
+      margin-top: 8px;
+      border-radius: 10px;
+      border: 2px solid var(--border-col);
+      background: var(--panel-bg);
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+
+    .exam-opt-btn:hover {
+      border-color: var(--accent-primary);
+    }
+
+    .exam-opt-btn.opt-correct {
+      background: #dcfce7;
+      border-color: #16a34a;
+      color: #14532d;
+    }
+
+    .exam-opt-btn.opt-wrong {
+      background: #fee2e2;
+      border-color: #dc2626;
+      color: #7f1d1d;
+    }
+
+    .exam-explain-box {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    .unit-bar-track {
+      width: 100%;
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 99px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .unit-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      transition: width 0.3s;
+    }
+  </style>
+</head>
+
+<body class="theme-admin" id="appBody">
+
+  
+  <header class="portal-header" id="headerBar"></header>
+
+  
+  <div class="container" id="mainContainer">
+    <div class="panel" style="text-align:center; padding:45px;">
+      Loading Homeschool Environment...
+    </div>
+
+
+  </div>
+
+
+
+
+
+  <script>
+    
+  
+  
+  const GAS_EXEC_URL =
+  'https://script.google.com/macros/s/AKfycbzZCfCca0B87v6KaDPwny9NcVHc4d1HNia26tP_Y8cQwNRJXX6dsKaNhu7Bxt_8oLXU/exec';
+
+  if (typeof window.google === 'undefined' || !window.google.script) {
+  function createGasRunner(successHandler, failureHandler) {
+  return new Proxy({}, {
+  get(target, propKey) {
+  if (propKey === 'withSuccessHandler') {
+  return (fn) => createGasRunner(fn, failureHandler);
+  }
+  if (propKey === 'withFailureHandler') {
+  return (fn) => createGasRunner(successHandler, fn);
+  }
+  return function(payload) {
+  fetch(GAS_EXEC_URL, {
+  method: 'POST',
+  headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+  body: JSON.stringify({ action: propKey, payload: payload })
+  })
+  .then(res => {
+  if (!res.ok) throw new Error('HTTP ' + res.status + ': ' + res.statusText);
+  return res.json();
+  })
+  .then(data => {
+  if (successHandler) successHandler(data);
+  })
+  .catch(err => {
+  console.error('GAS run error [' + propKey + ']:', err);
+
+  if (failureHandler) failureHandler(err);
+  });
+  };
+  }
+  });
+  }
+
+
+  window.google = window.google || {};
+  window.google.script = {
+  run: createGasRunner()
+
+  };
+  }
+
+
+
+
+
+    
+      const _urlParams = new URLSearchParams(window.location.search);
+        const _rawLockedRole = 'admin';
+          const LOCKED_ROLE = (!_rawLockedRole || _rawLockedRole.indexOf('<' + '?') !== -1 || _rawLockedRole === 'undefined')
+              ? (_urlParams.get('view') || _urlParams.get('student') || 'admin')
+                  : _rawLockedRole;
+                    let CURRENT_VIEW = LOCKED_ROLE;
+
+                      const _rawWeek = 'W9';
+                        let rawWeekVal = (!_rawWeek || _rawWeek.indexOf('<' + '?') !== -1 || _rawWeek === 'undefined')
+                            ? (_urlParams.get('week') || 'W9')
+                                : _rawWeek;
+                                  let SELECTED_WEEK = String(rawWeekVal).startsWith('W') ? String(rawWeekVal) : ('W' + rawWeekVal);
+
+                                    const _rawDay = 'D4';
+
+
+                                      let rawDayVal = (!_rawDay || _rawDay.indexOf('<' + '?') !== -1 || _rawDay === 'undefined')
+                                          ? (_urlParams.get('day') || 'D4')
+                                              : _rawDay;
+                                                let SELECTED_DAY = String(rawDayVal).startsWith('D') ? String(rawDayVal) : ('D' + rawDayVal);
+
+                                          
+                                                                                                                                                                                                                                                                                                                                         let SELECTED_COURSE_ID = "";
+    let DOC_TAB_MODE = "reading"; 
+
+
+
+    let STUDENT_SUBVIEW = "daily"; 
+    let PORTAL_DATA = null;
+
+let CACHED_RAW_INDEX_HTML = "";
+if (typeof google !== 'undefined' && google.script && google.script.run) {
+  try {
+      google.script.run.withSuccessHandler(function(html) {
+            if (html) CACHED_RAW_INDEX_HTML = html;
+                }).getRawIndexHtml();
+                  } catch(e) {}
+                  }
+
+    let TUTOR_HISTORY = {};
+    let EXAM_STATE = {};
+
+    const DAY_LABELS = {
+      D1: 'Monday (Day 1)',
+      D2: 'Tuesday (Day 2)',
+      D3: 'Wednesday (Day 3)',
+      D4: 'Thursday (Day 4)',
+      D5: 'Friday (Day 5 — Quiz)'
+    };
+
+    
+
+    const EXAM_BANK = {
+      
+      'A_ALG1': {
+        scope: 'Weeks 1–10 (Ch. 0 Foundations, Ch. 1 Linear/Absolute Value, Systems of Equations)',
+        prompt: 'Act as my Algebra 1 Semester Exam Tutor. Quiz me interactively across Unit 1 (Integers, Order of Operations & Properties), Unit 2 (Multi-Step, Fractional, Literal & Absolute Value Equations), and Unit 3 (Systems of Linear Equations by Substitution & Special Cases). Ask 1 problem at a time, check my algebraic steps, and output a Strengths & Weaknesses Diagnostic Report.',
+        units: [
+          { name: 'Unit 1: Foundations & Properties (W1–W3)', items: ['Signed integer operations & exponents: (-3)^2 = 9 vs. -3^2 = -9', 'Order of Operations (PEMDAS) & Distributive Property: a(b + c) = ab + ac', 'Combining like terms & evaluating multi-variable algebraic expressions'] },
+          { name: 'Unit 2: Linear, Fractional & Absolute Value Equations (W4–W8)', items: ['Clearing fractions first by multiplying EVERY term on both sides by the LCD', 'Literal equations (isolating a target variable, e.g., solving A = 1/2 bh for b)', 'Absolute Value Equations: Isolate |ax + b| = c first, then split into +c and -c cases'] },
+          { name: 'Unit 3: Systems of Equations & Modeling (W9–W10)', items: ['Substitution Method: Isolate one variable, substitute into the other equation, back-substitute', 'Special Cases: Independent (1 solution), Dependent (identity like -4 = -4, infinite solutions), Inconsistent (false statement like 0 = 4, parallel lines, no solution)', 'Break-even & mixture word problems (Revenue = Cost)'] }
+        ],
+        defensePrompt: 'Show every algebraic step to solve the system y = 3x - 4 and 2x + 3y = 10 on paper, then explain why 2x + y = 5 and 4x + 2y = 14 has NO solution (Problem #6 from your Week 9 worksheet).',
+        questions: [
+          { unit: 'Unit 1', q: 'Evaluate (-4)^2 - 3(2 - 5) using strict Order of Operations.', opts: ['25', '-7', '7', '-25'], ans: 0, exp: '(-4)^2 = +16, and -3(-3) = +9. Then 16 + 9 = 25.' },
+          { unit: 'Unit 1', q: 'Simplify the expression: 5 - 2(3x - 4).', opts: ['9x - 12', '13 - 6x', '-6x - 3', '3 - 6x'], ans: 1, exp: 'Distribute -2 across (3x - 4) to get 5 - 6x + 8 = 13 - 6x. Watch the negative times a negative!' },
+          { unit: 'Unit 2', q: 'To clear fractions in (2/3)x - 4 = (1/6)x + 1 by multiplying by LCD = 6, what is the correct resulting equation?', opts: ['4x - 4 = x + 1', '4x - 24 = x + 6', '2x - 24 = x + 6', '4x - 12 = x + 6'], ans: 1, exp: 'Every term on both sides—including the integer terms -4 and +1—must be multiplied by 6: 6(2/3)x - 6(4) = 6(1/6)x + 6(1) -> 4x - 24 = x + 6.' },
+          { unit: 'Unit 2', q: 'What are the solutions to the absolute value equation 3 + 2|x - 1| = 11?', opts: ['x = 5 or x = -3', 'x = 5 or x = 3', 'x = 6 or x = -4', 'No solution'], ans: 0, exp: 'First isolate the absolute value: 2|x - 1| = 8 -> |x - 1| = 4. Then split: x - 1 = 4 (x = 5) or x - 1 = -4 (x = -3).' },
+          { unit: 'Unit 3', q: 'Solve the system by substitution: y = 2x + 1 and 3x + 2y = 16.', opts: ['(2, 5)', '(3, 7)', '(1, 3)', '(4, 2)'], ans: 0, exp: 'Substitute (2x + 1) for y: 3x + 2(2x + 1) = 16 -> 7x + 2 = 16 -> 7x = 14 -> x = 2. Then y = 2(2) + 1 = 5.' },
+          { unit: 'Unit 3', q: 'When solving 2x + y = 5 and 4x + 2y = 14, the variables cancel out and leave 10 = 14 (or 0 = 4). How is this system classified?', opts: ['Independent (One solution)', 'Dependent (Infinitely many solutions)', 'Inconsistent (Parallel lines, no solution)', 'Quadratic system'], ans: 2, exp: 'A false contradiction (10 = 14) means the lines are parallel with the same slope (-2) and different y-intercepts—an Inconsistent system with no solution.' }
+        ]
+      },
+      'A_ANAT': {
+        scope: 'Weeks 1–10 (OpenStax Ch. 1 Homeostasis, Ch. 2 Chemistry, Ch. 3 Cells, Ch. 4 Histology)',
+        prompt: 'Act as my High School Anatomy & Physiology Exam Evaluator. Quiz me interactively across Unit 1 (Ch 1 Homeostasis & Anatomical Language), Unit 2 (Ch 2 Chemical Bonds, pH & Macromolecules), and Unit 3 (Ch 3–4 Cell Membrane Transport & Primary Tissue Histology). Ask 1 question at a time and provide a Strengths & Weaknesses Diagnostic Report.',
+        units: [
+          { name: 'Unit 1: Organization, Homeostasis & Anatomical Terms (W1–W4)', items: ['Hierarchy: Chemical -> Cellular -> Tissue -> Organ -> Organ System -> Organism', 'Negative Feedback (reverses deviation: body temp, blood glucose) vs. Positive Feedback (amplifies: childbirth, blood clotting)', 'Directional terms (proximal/distal, medial/lateral) & body planes (sagittal, frontal/coronal, transverse)'] },
+          { name: 'Unit 2: Chemical Level & Macromolecules (W5–W7)', items: ['Ionic bonds (electron transfer), Polar Covalent (unequal sharing), Hydrogen bonds', 'Physiological blood pH range (7.35–7.45) & bicarbonate buffer system', 'Organic Macromolecules: Carbohydrates (glycogen), Lipids (phospholipids), Proteins (enzymes), Nucleic Acids (DNA/RNA/ATP)'] },
+          { name: 'Unit 3: Cellular Transport & Histology Ch. 4 (W8–W10)', items: ['Amphipathic phospholipid bilayer (hydrophilic heads, hydrophobic tails) & Osmosis/Tonicity', 'Epithelial Tissue: High cellularity, polar (apical/basal), anchored to basement membrane, strictly AVASCULAR', 'Connective (ECM + collagen/elastic/reticular fibers) & Muscle (Skeletal, Cardiac w/ intercalated discs, Smooth)'] }
+        ],
+        defensePrompt: 'Explain why epithelial tissue is strictly avascular and how it receives nutrients, then contrast Skeletal, Cardiac, and Smooth muscle by striations, nuclei, and control.',
+        questions: [
+          { unit: 'Unit 1', q: 'During childbirth, oxytocin stimulates uterine contractions, which push the baby against the cervix to trigger even more oxytocin release. What mechanism is this?', opts: ['Negative feedback loop', 'Positive feedback loop', 'Catabolic equilibrium', 'Pericardial buffering'], ans: 1, exp: 'Positive feedback amplifies the original stimulus until a climactic event (delivery) completes the cycle.' },
+          { unit: 'Unit 1', q: 'Which anatomical plane divides the body into anterior (front) and posterior (back) portions?', opts: ['Sagittal plane', 'Transverse (horizontal) plane', 'Frontal (coronal) plane', 'Midsagittal plane'], ans: 2, exp: 'The frontal (coronal) plane separates anterior from posterior; sagittal separates left/right; transverse separates superior/inferior.' },
+          { unit: 'Unit 2', q: 'What is the normal homeostatic pH range of human arterial blood, and how do enzymes speed up cellular reactions?', opts: ['pH 6.80–7.00; by raising temperature', 'pH 7.35–7.45; by lowering activation energy', 'pH 7.35–7.45; by being consumed in the reaction', 'pH 8.10–8.40; by donating H+ ions'], ans: 1, exp: 'Human blood pH is tightly buffered between 7.35 and 7.45, and biological catalysts (enzymes) work by lowering activation energy.' },
+          { unit: 'Unit 2', q: 'Which part of a membrane phospholipid is hydrophilic ("water-loving") and faces the intracellular and extracellular fluid?', opts: ['Nonpolar fatty acid tails', 'Polar phosphate-containing head', 'Cholesterol steroid ring', 'Glycogen chain'], ans: 1, exp: 'Phospholipids are amphipathic: their polar phosphate heads are hydrophilic, while their nonpolar fatty acid tails are hydrophobic.' },
+          { unit: 'Unit 3', q: 'Why does epithelial tissue depend on diffusion across the basement membrane for oxygen and nutrients?', opts: ['It lacks a nucleus', 'It is strictly avascular (contains no blood vessels)', 'It is composed entirely of collagen fibers', 'It only exists on dry dead skin'], ans: 1, exp: 'Epithelial tissue is avascular, meaning blood vessels do not penetrate the basement membrane; nutrients diffuse from underlying connective tissue.' },
+          { unit: 'Unit 3', q: 'Which muscle tissue type is striated, involuntary, uninucleated, and joined by specialized gap junctions called intercalated discs?', opts: ['Skeletal muscle', 'Smooth muscle', 'Cardiac muscle', 'Dense regular connective tissue'], ans: 2, exp: 'Cardiac muscle in the heart wall features branching striated fibers connected by intercalated discs for synchronized involuntary contraction.' }
+        ]
+      },
+      'A_BIBLE': {
+        scope: 'Weeks 1–10 (Apologetics: Worldview Foundations, Abiogenesis, Teleological Fine-Tuning & Irreducible Complexity)',
+        prompt: 'Act as my High School Apologetics Exam Evaluator. Quiz me interactively across Unit 1 (Operational vs. Historical Science & Worldview Foundations), Unit 2 (Abiogenesis, Law of Biogenesis & DNA Information Theory), and Unit 3 (Teleological Fine-Tuning, Irreducible Complexity & Young Earth Evidence). Ask 1 question at a time and generate a Strengths & Weaknesses Diagnostic Report.',
+        units: [
+          { name: 'Unit 1: Operational vs. Historical Science & Worldview (W1–W3)', items: ['Operational Science (repeatable, observable, testable in the present) vs. Historical Science (interpreting past origins)', 'Imago Dei (Genesis 1:26–27) & the foundation of human dignity/ethics ("all men are created")', 'Micro-adaptation/natural selection within created kinds vs. macroevolution (which requires new functional genetic information)'] },
+          { name: 'Unit 2: Information Theory & Law of Biogenesis (W4–W6)', items: ['Law of Biogenesis (Louis Pasteur): Life only comes from pre-existing life, refuting spontaneous abiogenesis', 'DNA as a semantic 4-character code: Specified functional information always originates from an intelligent mind', 'Thermodynamics & Cosmology challenges to secular self-creation models'] },
+          { name: 'Unit 3: Teleological Fine-Tuning & Irreducible Complexity (W7–W10)', items: ['Teleological Argument (Romans 1:20): Fine-tuning of the Strong Nuclear Force & Cosmological Constant', 'Irreducible Complexity (Blood Clotting Cascade): All interacting parts must be present simultaneously for function', 'Physical clocks: Soft tissue/collagen and Carbon-14 in dinosaur/coal strata'] }
+        ],
+        defensePrompt: 'Using your Week 9 Apologetics worksheet, explain what happens if the Strong Nuclear Force is altered slightly, and use the Blood Clotting Cascade to define Irreducible Complexity.',
+        questions: [
+          { unit: 'Unit 1', q: 'What is the key distinction between Operational Science and Historical (Origins) Science?', opts: ['Operational science uses math while historical science does not', 'Operational science tests repeatable, observable present-day phenomena; historical science interprets unrepeatable past events', 'Historical science is tested in a laboratory', 'Operational science only studies rocks'], ans: 1, exp: 'Operational science relies on repeatable, observable experiments in the present, whereas historical science reconstructs past events using worldview assumptions.' },
+          { unit: 'Unit 1', q: 'Why does observable natural selection (such as finch beak variations or dog breeding) NOT prove molecules-to-man macroevolution?', opts: ['Natural selection only sorts or loses existing genetic information rather than generating new functional genetic blueprints', 'Natural selection never happens in nature', 'Finches are not living organisms', 'Mutations always add brand-new organs'], ans: 0, exp: 'Adaptation and natural selection shuffle or pare down pre-existing genetic traits within a created kind, whereas macroevolution requires adding massive amounts of new genetic information.' },
+          { unit: 'Unit 2', q: 'What scientific law—demonstrated by Louis Pasteur—states that life in the material world only arises from pre-existing life?', opts: ['Law of Uniformitarianism', 'Law of Biogenesis', 'Second Law of Thermodynamics', 'Law of Superposition'], ans: 1, exp: 'The Law of Biogenesis demonstrates empirically that living organisms only come from other living organisms, directly challenging chemical abiogenesis.' },
+          { unit: 'Unit 2', q: 'Why does the four-letter nucleotide code inside DNA point directly to an intelligent Creator?', opts: ['Because chemicals naturally arrange themselves into alphabetical sentences', 'Because specified, semantic information and coding systems only ever originate from an intelligent mind', 'Because DNA is a simple repeating crystal like salt', 'Because RNA has no structure'], ans: 1, exp: 'In all human observation (information theory), coded language and specified functional instructions invariably trace back to a mind, never random physical law.' },
+          { unit: 'Unit 3', q: 'In cosmological fine-tuning, what would happen if the Strong Nuclear Force were just slightly weaker?', opts: ['Protons could not bind together in atomic nuclei, leaving hydrogen as the only element in the universe (no carbon or chemistry for life)', 'Space would expand too rapidly', 'Gravity would reverse', 'All stars would turn into ice'], ans: 0, exp: 'If the Strong Nuclear Force were slightly weaker, multi-proton nuclei could not hold together, making carbon-based life chemically impossible.' },
+          { unit: 'Unit 3', q: 'How does the human Blood Clotting Cascade illustrate Irreducible Complexity?', opts: ['It only uses one single protein', 'If any single clotting factor is missing, the entire cascade fails and the organism bleeds to death or clots solid', 'Blood clots without any proteins', 'It evolved one protein per million years'], ans: 1, exp: 'An irreducibly complex system requires every well-matched component to be present simultaneously in regulated order for the system to function at all.' }
+        ]
+      },
+      'A_HIST': {
+        scope: 'Weeks 1–10 (This Changed Everything: Gospel, Magna Carta, Reformation, Mayflower, Great Awakening & U.S. Constitution)',
+        prompt: 'Act as my High School History & Civics Exam Evaluator. Quiz me interactively across Unit 1 (The Gospel & Magna Carta 1215), Unit 2 (The Reformation, Mayflower Compact & Great Awakening), and Unit 3 (Articles of Confederation, Great Compromise, Federalist No. 51 & Bill of Rights). Ask 1 question at a time and generate a Strengths & Weaknesses Diagnostic Report.',
+        units: [
+          { name: 'Unit 1: Early Church & Magna Carta (W1–W3)', items: ['Early Church compassion during the Plague of Cyprian & dignity of every human life', 'Magna Carta (1215 at Runnymede): Forced King John to accept Lex Rex ("The Law is King")', 'Foundational liberties: Due process, habeas corpus, trial by jury, no taxation without representation'] },
+          { name: 'Unit 2: Reformation, Mayflower & Great Awakening (W4–W8)', items: ['Gutenberg press, Luther\'s 95 Theses (1517), Tyndale\'s English Bible & liberty of conscience', 'Mayflower Compact (1620 civil body politic) & William Bradford\'s 1623 shift from communal farming to private property', 'Great Awakening: George Whitefield & Jonathan Edwards uniting the 13 colonies before 1776'] },
+          { name: 'Unit 3: U.S. Constitution & Federalism (W9–W10)', items: ['Weaknesses of the Articles of Confederation exposed by Shays\' Rebellion', 'Great (Connecticut) Compromise: Bicameral Congress (House by population, Senate w/ equal state representation)', 'Federalists vs. Anti-Federalists, Madison\'s Federalist No. 51 ("If men were angels..."), and the Bill of Rights'] }
+        ],
+        defensePrompt: 'Explain how William Bradford\'s 1623 property reform saved Plymouth Colony from famine, and how James Madison\'s quote in Federalist No. 51 ("If men were angels...") justifies Separation of Powers.',
+        questions: [
+          { unit: 'Unit 1', q: 'What revolutionary legal principle was established at Runnymede in 1215 when English barons forced King John to sign the Magna Carta?', opts: ['Rex Lex (The King is above the Law)', 'Lex Rex (The Law is King — even the monarch is subject to the law)', 'Universal direct democracy', 'Abolition of Parliament'], ans: 1, exp: 'Magna Carta established Lex Rex (the rule of law over arbitrary royal power), laying the groundwork for due process and trial by jury.' },
+          { unit: 'Unit 1', q: 'How did John Locke\'s Two Treatises of Government build on earlier constitutional traditions to influence the American Founders?', opts: ['It argued that kings rule by unconditional divine right', 'It argued that governments exist by consent of the governed to secure God-given natural rights to life, liberty, and property', 'It called for abolishing private property', 'It opposed written constitutions'], ans: 1, exp: 'Locke articulated that legitimate government is a social compact formed to protect natural rights to life, liberty, and property.' },
+          { unit: 'Unit 2', q: 'According to Governor William Bradford\'s Of Plimoth Plantation, what policy change in 1623 ended Plymouth\'s chronic food shortages?', opts: ['Importing food from Spain', 'Replacing the communal "common course" with private land parcels for each family to farm', 'Forcing everyone into military barracks', 'Abandoning agriculture for fur trading'], ans: 1, exp: 'Assigning each family its own parcel of land incentivized personal stewardship and industriousness, immediately producing an agricultural surplus.' },
+          { unit: 'Unit 2', q: 'How did the First Great Awakening (led by figures like George Whitefield and Jonathan Edwards) help prepare the 13 colonies for the American Revolution?', opts: ['It forged inter-colonial unity, emphasized spiritual equality before God, and challenged state-established church monopolies', 'It convinced colonists to surrender to the British Crown', 'It outlawed printing presses', 'It only occurred in one single town'], ans: 0, exp: 'Whitefield\'s preaching tour united all 13 colonies in a shared spiritual movement that emphasized individual liberty and accountability under God.' },
+          { unit: 'Unit 3', q: 'How did the Great (Connecticut) Compromise of 1787 resolve the deadlock between the Virginia Plan and the New Jersey Plan?', opts: ['It created a unicameral Congress', 'It created a bicameral Congress: the House of Representatives based on population and the Senate with 2 senators per state', 'It let the President appoint all members of Congress', 'It abolished state governments'], ans: 1, exp: 'The Great Compromise balanced large and small states by apportioning the House by population and giving every state equal representation (2 senators) in the Senate.' },
+          { unit: 'Unit 3', q: 'In Federalist No. 51, why did James Madison write, "If men were angels, no government would be necessary"?', opts: ['To argue that government officials never make mistakes', 'To explain why fallen human nature requires both an energetic government AND internal Checks and Balances / Separation of Powers', 'To oppose ratification of the Constitution', 'To argue against having a judicial branch'], ans: 1, exp: 'Madison argued that because both citizens and rulers are flawed human beings, power must be divided across three branches so "ambition must be made to counteract ambition."' }
+        ]
+      },
+      'A_SHAK': {
+        scope: 'Weeks 1–7 (Macbeth Complete Acts I–V & Romeo and Juliet Act I)',
+        prompt: 'Act as my High School Shakespeare Exam Coach. Quiz me interactively across Macbeth Acts I–V (prophecies, tragic flaw, soliloquies, apparitions) and Romeo & Juliet Act I (Prologue, Benvolio vs. Tybalt foils, Queen Mab). Ask 1 question at a time and generate a Strengths & Weaknesses Report.',
+        units: [
+          { name: 'Unit 1: Macbeth Acts I–III — Ambition, Regicide & Guilt (W1–W3)', items: ['Witches\' initial prophecy: Macbeth as Thane of Glamis, Thane of Cawdor, and King; Banquo will father kings', 'Inverness regicide: Hallucinated floating dagger, "Macbeth does murder sleep", Lady Macbeth framing the guards', 'Banquo\'s murder, Fleance\'s escape, and Banquo\'s Ghost at the royal banquet'] },
+          { name: 'Unit 2: Macbeth Acts IV–V — Apparitions & Reckoning (W4–W6)', items: ['Three Apparitions: (1) Armed Head ("Beware Macduff"), (2) Bloody Child ("None of woman born"), (3) Crowned Child w/ tree (Birnam Wood to Dunsinane)', 'Lady Macbeth\'s sleepwalking ("Out, damned spot!") & Macbeth\'s "Tomorrow, and tomorrow, and tomorrow" soliloquy', 'Soldiers camouflaged with Birnam Wood branches; Macduff ("untimely ripped") slays Macbeth'] },
+          { name: 'Unit 3: Romeo and Juliet Act I — Feud, Foils & Foreshadowing (W7)', items: ['14-line Sonnet Prologue in Verona: Montagues vs. Capulets, "star-crossed lovers" (Fate vs. Free Will)', 'Prince Escalus\'s death decree; Dramatic Foils: peacemaker Benvolio vs. fiery Tybalt', 'Mercutio\'s Queen Mab speech ("children of an idle brain") vs. Romeo\'s premonition ("Some consequence yet hanging in the stars")'] }
+        ],
+        defensePrompt: 'Analyze how Tybalt serves as a dramatic foil to Benvolio in Romeo & Juliet Act I, and compare how equivocation deceived Macbeth in Act V (Birnam Wood & Macduff\'s birth).',
+        questions: [
+          { unit: 'Unit 1', q: 'Why does Macbeth hire murderers to ambush Banquo and his son Fleance in Act III of Macbeth?', opts: ['Banquo stole the Scottish crown', 'The Witches prophesied that Banquo\'s descendants—not Macbeth\'s—would inherit the throne', 'Banquo helped Malcolm flee to England', 'Lady Macbeth ordered Fleance crowned'], ans: 1, exp: 'Fearing his "barren sceptre," Macbeth tries to thwart the Witches\' prophecy that Banquo will be father to a line of kings.' },
+          { unit: 'Unit 1', q: 'In Act II, what hallucination leads Macbeth toward King Duncan\'s bedchamber, and who returns the bloody daggers to frame the guards?', opts: ['Banquo\'s ghost; Macduff', 'A floating dagger with blood on the blade; Lady Macbeth', 'Three witches holding torches; the Porter', 'A crowned child; Lennox'], ans: 1, exp: 'Macbeth sees a floating dagger ("Is this a dagger which I see before me?"), and when he brings the murder weapons back in panic, Lady Macbeth plants them on the guards.' },
+          { unit: 'Unit 2', q: 'Which of the Witches\' three apparitions warns Macbeth to "Beware Macduff; beware the Thane of Fife"?', opts: ['The Bloody Child', 'The Armed Head', 'The Crowned Child holding a tree', 'Hecate\'s cauldron'], ans: 1, exp: 'The first apparition—an Armed Head (symbolizing Macduff\'s rebellion)—warns Macbeth to beware Macduff.' },
+          { unit: 'Unit 2', q: 'How are the "impossible" prophecies of the Bloody Child and Crowned Child fulfilled in Act V?', opts: ['Malcolm\'s army uses branches from Birnam Wood as camouflage, and Macduff was born by Caesarean section ("untimely ripped")', 'An earthquake moves Dunsinane Hill and Lady Macbeth defeats Macbeth', 'Fleance leads a naval fleet', 'The Witches cast a spell on Macduff'], ans: 0, exp: 'The Witches used equivocation (half-truths): soldiers carry Birnam Wood boughs to Dunsinane, and Macduff was delivered via C-section.' },
+          { unit: 'Unit 3', q: 'In Romeo and Juliet Act I, Scene 1, how does Tybalt function as a dramatic foil to Benvolio?', opts: ['Both characters try to stop the brawl peacefully', 'Benvolio draws his sword to part the fighters and keep the peace, while Tybalt hates peace and escalates the brawl', 'Tybalt is a Montague and Benvolio is a Capulet', 'Tybalt is Romeo\'s best friend'], ans: 1, exp: 'Tybalt\'s fiery aggression ("I hate the word [peace], as I hate hell, all Montagues, and thee") contrasts sharply with Benvolio\'s peacemaking.' },
+          { unit: 'Unit 3', q: 'In Act I, Scene 4, how does Mercutio\'s Queen Mab speech contrast with Romeo\'s closing speech before entering the Capulet feast?', opts: ['Mercutio mocks dreams as "the children of an idle brain," whereas Romeo senses dark fate ("Some consequence yet hanging in the stars")', 'Mercutio believes dreams are divine prophecies while Romeo laughs at them', 'Both characters refuse to attend the feast', 'Queen Mab is Juliet\'s nurse'], ans: 0, exp: 'Mercutio serves as a witty, skeptical foil to Romeo\'s brooding romanticism and premonition of tragedy.' }
+        ]
+      },
+      'A_LIFE': {
+        scope: 'Weeks 1–4 (Time Management, Formal Email Etiquette, Zero-Based Budgeting & $100+ Major Purchase Financing)',
+        prompt: 'Act as my High School Life Skills & Personal Finance Coach. Quiz me on Unit 1 (Priority Matrix & Professional Email Etiquette), Unit 2 (Gross vs. Net Pay, Tax Withholding % & Zero-Based 50/30/20 Budgeting), and Unit 3 ($100+ Major Purchase Comparison, Unit Pricing & 18% APR Financing). Ask 1 question at a time and provide a Strengths & Weaknesses Report.',
+        units: [
+          { name: 'Unit 1: Time Management & Professional Communication (W1–W2)', items: ['Priority Matrix: Non-negotiable duties before recreation; 3-day time audit vs. planned schedule', 'Formal Email Anatomy: Specific Subject Line, Formal Salutation, Clear Body, Call to Action, Professional Sign-Off'] },
+          { name: 'Unit 2: Income, Taxes & Zero-Based Budgeting (W3)', items: ['Gross Pay (before deductions) vs. Net Pay (take-home); Tax Withholding % = ((Gross - Net) / Gross) * 100', 'Fixed Expenses (rent, internet) vs. Variable Expenses (groceries, gas); Needs vs. Wants', 'Zero-Based Budget (Net Income - Total Allocated = $0.00) & 50/30/20 Rule ("Pay Yourself First")'] },
+          { name: 'Unit 3: Major Purchase Comparison & 18% APR Financing (W4)', items: ['True Total Out-of-Pocket Cost = Base Price + 6% MI Sales Tax + Shipping', 'Cash vs. 12-Month 18% APR Financing: Calculating total interest paid & hours of labor at $12/hr', 'Distinguishing lender interest charges from extended product warranty coverage & replacement lifecycle'] }
+        ],
+        defensePrompt: 'Using your Week 4 Laptops for Scholars report (Lenovo G-15 at $581.83 cash vs. $53.35/mo for 12 months at 18% APR), show how many hours of work at $12/hr go strictly to paying interest, and explain the difference between credit interest and a product warranty.',
+        questions: [
+          { unit: 'Unit 1', q: 'Which of the following is the strongest professional email subject line when submitting a question to an instructor?', opts: ['hey quick question!!', 'Question Regarding Week 4 Finance Lab — Ash Wojcik', 'HELP ME PLEASE', '(No Subject)'], ans: 1, exp: 'A professional subject line immediately identifies the exact topic/course and the sender\'s full name.' },
+          { unit: 'Unit 1', q: 'In a Priority Matrix, what is the purpose of logging a 3-Day Actual Time Audit alongside your Master Weekly Schedule?', opts: ['To eliminate sleep', 'To identify hidden time-wasters and align actual daily habits with non-negotiable priorities', 'To avoid scheduling any free time', 'To replace all academic blocks'], ans: 1, exp: 'Comparing planned vs. actual hours reveals where time leaks occur so you can protect core responsibilities and intentional unplugged rest.' },
+          { unit: 'Unit 2', q: 'If your monthly Gross Pay is $3,000 and your Net Take-Home Pay is $2,550, what percentage of your gross income was withheld for taxes/deductions?', opts: ['12%', '15%', '18%', '20%'], ans: 1, exp: 'Tax Withholding % = (($3,000 - $2,550) / $3,000) * 100 = ($450 / $3,000) * 100 = 15%.' },
+          { unit: 'Unit 2', q: 'What is the defining equation of a Zero-Based Budget using the 50/30/20 framework?', opts: ['Spend 100% on wants so your bank balance hits zero', 'Net Income minus Total Allocated (Needs + Wants + Savings/Giving) equals $0.00 because every dollar is assigned a job', 'Gross Income minus Taxes equals $0.00', 'Only save money if anything is left at the end of the month'], ans: 1, exp: 'In a zero-based budget, every dollar of Net Pay is intentionally assigned to a category (including "Pay Yourself First" savings) until unassigned dollars equal $0.00.' },
+          { unit: 'Unit 3', q: 'In your Week 4 Laptop Report, Option B costs $581.83 cash, or $53.35/month for 12 months at 18% APR ($640.20 total). How much extra interest do you pay by financing, and how many hours of work at $12/hr does that interest cost?', opts: ['$25.00 interest (~2.1 hours)', '$58.37 interest (~4.9 hours)', '$100.00 interest (~8.3 hours)', '$0.00 interest'], ans: 1, exp: '$640.20 - $581.83 = $58.37 in finance charges. Divided by $12/hr, that equals 4.86 (~4.9) hours of labor spent purely paying interest to the lender.' },
+          { unit: 'Unit 3', q: 'What is the difference between an 18% APR finance charge and an extended product warranty?', opts: ['They are the exact same fee', 'APR interest is a fee paid to a lender for borrowing money; a warranty is a service contract for repair or replacement if the hardware fails', 'APR interest extends the laptop\'s battery life', 'A warranty lowers your sales tax'], ans: 1, exp: 'Credit interest compensates a bank/lender for borrowed time and adds zero product protection, whereas a warranty covers physical repair/replacement.' }
+        ]
+      },
+      'A_HOME': {
+        scope: 'Weeks 1–4 (Providential Stewardship, Natural Cleaners, Acid-Base Body Care Chemistry & Canning Safety)',
+        prompt: 'Act as my Homesteading Exam Coach. Quiz me across Unit 1 (Providential Planning & FIFO Pantry Audits), Unit 2 (Acid-Base Chemistry of Natural Cleaners & Scalp pH 4.5–5.5), and Unit 3 (Herbal Salve Formulations & Water Bath vs. Pressure Canning Safety). Ask 1 question at a time and generate a Strengths & Weaknesses Report.',
+        units: [
+          { name: 'Unit 1: Providential Planning & Pantry Stewardship (W1)', items: ['The Firewood & Pectin Principle: Seasoning wood and stocking canning supplies seasons before harvest', 'FIFO (First-In, First-Out) Pantry Audit: Planning garden & canning quotas around real family consumption'] },
+          { name: 'Unit 2: Non-Toxic Acid-Base Chemistry & Body Care (W2–W4)', items: ['Human hair/scalp natural acidic pH (4.5–5.5): Diluted Apple Cider Vinegar (acetic acid) flattens cuticle scales after alkaline soap', 'Baking Soda (sodium bicarbonate): Mild alkali base that neutralizes acidic odor molecules into odorless salts', 'Cold-pressed therapeutic essential oils (lavender, rosemary, tea tree) vs. synthetic petroleum fragrance oils'] },
+          { name: 'Unit 3: Herbal Infusions & Canning Food Safety (W3–W4)', items: ['Lab 1 Herbal ACV Hair Rinse (chamomile, sage, rosemary, thyme) & Lab 2 Beeswax/Olive Oil Healing Salve', 'Water Bath Canning (212°F for high-acid fruits/jams/pickles) vs. Pressure Canning (240°F+ mandatory for low-acid meats/beans/broth to destroy Clostridium botulinum spores)'] }
+        ],
+        defensePrompt: 'Explain the acid-base chemistry of why a diluted Apple Cider Vinegar rinse restores hair/scalp pH (4.5–5.5) after washing with alkaline soap, and state the exact rule for when Pressure Canning (240°F+) is mandatory.',
+        questions: [
+          { unit: 'Unit 1', q: 'What is the primary purpose of conducting a FIFO (First-In, First-Out) Pantry Inventory before planning your garden and canning season?', opts: ['To throw away all canned goods every month', 'To rotate older jars to the front and match planting/canning quotas to what your family actually eats', 'To buy more commercial cleaners', 'To avoid growing vegetables'], ans: 1, exp: 'A pantry audit prevents waste and ensures you grow and preserve the exact items your household consumes.' },
+          { unit: 'Unit 1', q: 'Why does the "Firewood & Pectin Principle" emphasize preparing seasons in advance on a homestead?', opts: ['Freshly cut green wood burns cleaner than seasoned wood', 'Firewood requires months/years to season dry, and canning lids/pectin sell out once fruit is already ripening', 'Pectin only works in winter', 'Seeds cannot be stored'], ans: 1, exp: 'Self-reliance depends on foresight—seasoning fuel and stocking preservation supplies well before harvest urgency hits.' },
+          { unit: 'Unit 2', q: 'Human hair and scalp have a natural pH of 4.5 to 5.5. Why does a diluted Apple Cider Vinegar (ACV) rinse improve hair health after washing with alkaline soap?', opts: ['ACV is a strong bleach', 'Acetic acid in ACV neutralizes alkaline soap residue, restores the acidic pH mantle, and flattens raised hair cuticle scales', 'ACV raises scalp pH to 11.0', 'ACV coats the hair in petroleum'], ans: 1, exp: 'Alkaline cleansers swell and lift hair cuticles; mildly acidic ACV restores the 4.5–5.5 pH balance and smooths the cuticle flat.' },
+          { unit: 'Unit 2', q: 'How does baking soda (sodium bicarbonate) eliminate body or household odors chemically rather than just masking them?', opts: ['It releases synthetic perfume', 'As a mild alkaline base, it reacts with volatile acidic odor molecules to neutralize them into odorless salts', 'It freezes bacteria', 'It lowers pH to 1.0'], ans: 1, exp: 'Most sour body and kitchen odors are weak organic acids; baking soda neutralizes them via an acid-base reaction.' },
+          { unit: 'Unit 3', q: 'In your Week 4 Homestead Healing Salve lab, what role does grated beeswax play when melted into herb-infused extra-virgin olive oil?', opts: ['It acts as an emulsifier and structural thickener that solidifies the liquid carrier oil into a protective balm at room temperature', 'It dissolves the glass jar', 'It turns the oil into vinegar', 'It lowers the boiling point of water'], ans: 0, exp: 'Beeswax firms the infused liquid carrier oil into a scoopable, breathable protective salve.' },
+          { unit: 'Unit 3', q: 'Why MUST low-acid foods (like green beans, meats, and poultry broth) be processed in a Pressure Canner (240°F+) rather than a boiling Water Bath (212°F)?', opts: ['To make the jars look shinier', 'Because Clostridium botulinum spores survive boiling water (212°F) and require 240°F+ steam under pressure to be destroyed', 'Because high-acid jams require pressure canning', 'To cook the food faster'], ans: 1, exp: 'Botulism spores thrive in sealed, anaerobic, low-acid jars unless destroyed at 240°F+ inside a pressure canner.' }
+        ]
+      },
+
+      
+      'N_BIBLE': {
+        scope: 'Weeks 1–10 (Nehemiah, Job, Daniel 2, Daniel 10 Spiritual Warfare & Jonah)',
+        prompt: 'Act as my 7th Grade Bible Exam Coach. Quiz me interactively across Nehemiah (52-day wall & Ezra reading the Law), Job (suffering, false comforters & God\'s whirlwind answer), Daniel 2 (Nebuchadnezzar\'s statue), and Daniel 10 (21-day spiritual warfare & Michael). Ask 1 question at a time and generate a Strengths & Weaknesses Report.',
+        units: [
+          { name: 'Unit 1: Nehemiah & Spiritual Renewal (W1–W3)', items: ['Nehemiah served as cupbearer to King Artaxerxes; wept, fasted, and prayed first (Neh. 1:4)', 'Rebuilt Jerusalem\'s wall in 52 days despite Sanballat & Tobiah; builders held a tool in one hand and a weapon in the other', 'Ezra read the Law from daybreak till noon to all who could understand (Neh. 8)'] },
+          { name: 'Unit 2: The Book of Job (W4–W5)', items: ['Job was blameless and upright; lost livestock and children in one day, yet worshiped God', 'Job\'s friends falsely claimed all suffering is direct punishment for secret sin; God answered from the whirlwind (Job 38–41)', 'God restored double Job\'s livestock (14,000 sheep, 6,000 camels) after Job prayed for his friends'] },
+          { name: 'Unit 3: Daniel 2, Daniel 10 & Jonah (W6–W10)', items: ['Daniel 2 Statue: Gold head (Babylon), Silver chest/arms (Medo-Persia), Bronze belly/thighs (Greece), Iron legs & Iron/Clay feet (Rome), shattered by the uncut Stone (God\'s eternal kingdom)', 'Daniel 10: Heavenly messenger delayed 21 days by the "Prince of Persia" until archangel Michael helped; Daniel 10:19 memory verse', 'Jonah called to Nineveh, fled toward Tarshish, swallowed by a great fish for 3 days and 3 nights'] }
+        ],
+        defensePrompt: 'Write Daniel 10:19 from memory ("Do not be afraid, you who are highly esteemed...") and explain why the heavenly messenger was delayed for 21 days in Daniel 10:12–13.',
+        questions: [
+          { unit: 'Unit 1', q: 'What official position did Nehemiah hold in the Persian palace of King Artaxerxes, and how many days did it take to rebuild Jerusalem\'s wall?', opts: ['General of the Army; 120 days', 'Cupbearer to the King; 52 days', 'High Priest; 40 days', 'Governor of Babylon; 7 years'], ans: 1, exp: 'Nehemiah was King Artaxerxes\' trusted cupbearer (Neh. 1:11), and the wall was completed in just 52 days (Neh. 6:15).' },
+          { unit: 'Unit 1', q: 'How did Nehemiah\'s workers respond when Sanballat and Tobiah threatened to attack Jerusalem during the rebuilding?', opts: ['They abandoned the wall and hid', 'They worked with a building tool in one hand and a weapon in the other while trusting God to fight for them', 'They paid Sanballat gold', 'They waited 10 years'], ans: 1, exp: 'In Nehemiah 4:17–20, the builders combined practical vigilance (tools and weapons) with faith ("Our God will fight for us!").' },
+          { unit: 'Unit 2', q: 'What false theological claim did Job\'s three friends repeatedly make, and how did God answer Job in chapters 38–41?', opts: ['They claimed Job\'s suffering proved he had committed secret sin; God spoke from the whirlwind pointing to His sovereign power over creation', 'They told Job to curse God; God sent an angel with gold', 'They said suffering doesn\'t exist', 'They blamed the Babylonians'], ans: 0, exp: 'Job\'s friends wrongly assumed suffering is always retribution for personal sin, whereas God revealed His transcendent wisdom from the whirlwind.' },
+          { unit: 'Unit 3', q: 'In Nebuchadnezzar\'s dream in Daniel 2, what did the uncut stone that struck the statue\'s feet of iron and clay represent?', opts: ['The city of Nineveh', 'God\'s eternal Kingdom that will never be destroyed', 'Alexander the Great\'s army', 'The Tower of Babel'], ans: 1, exp: 'Daniel 2:44 explains that the stone cut without human hands represents God\'s everlasting Kingdom that outlasts every earthly empire.' },
+          { unit: 'Unit 3', q: 'In Daniel 10:12–13, when did God hear Daniel\'s prayer, and why did it take 21 days for the heavenly messenger to arrive?', opts: ['God heard on Day 21 because Daniel forgot to fast', 'God heard on the very first day Daniel humbled himself, but the spiritual "prince of the Persian kingdom" resisted the messenger for 21 days until Michael came to help', 'The messenger got lost in Egypt', 'King Artaxerxes blocked the road'], ans: 1, exp: 'Daniel\'s prayer was heard on Day 1 (v. 12), revealing that unseen spiritual warfare was taking place behind earthly kingdoms until the archangel Michael intervened (v. 13).' },
+          { unit: 'Unit 3', q: 'Where did God command Jonah to preach, and toward which city did Jonah board a ship to flee?', opts: ['Called to Babylon; fled to Rome', 'Called to Nineveh; fled toward Tarshish', 'Called to Susa; fled to Jericho', 'Called to Memphis; fled to Crete'], ans: 1, exp: 'Jonah 1:1–3 records that God called Jonah to preach to wicked Nineveh, but he boarded a ship heading the opposite direction toward Tarshish.' }
+        ]
+      },
+      'N_PREALG': {
+        scope: 'Weeks 1–10 (Unit 1 PEMDAS & Properties, Unit 2 Fractions & GCF/LCM, Unit 3 Decimals, Percentages & Consumer Math)',
+        prompt: 'Act as my 7th Grade Pre-Algebra Exam Coach. Give me an interactive diagnostic covering Unit 1 (Order of Operations & Properties), Unit 2 (Fractions, Mixed Numbers & Reciprocals), and Unit 3 (Decimals, Percent Conversions & Sequential Discounts). Ask 1 problem at a time, check my steps, and output a Strengths & Weaknesses Report.',
+        units: [
+          { name: 'Unit 1: Whole Numbers, Exponents & PEMDAS (W1–W4)', items: ['Commutative, Associative, and Distributive Properties: a(b + c) = ab + ac', 'Order of Operations (PEMDAS): Parentheses, Exponents, Multiply/Divide left-to-right, Add/Subtract left-to-right'] },
+          { name: 'Unit 2: Fractions, Mixed Numbers & GCF/LCM (W5–W8)', items: ['Prime factorization, Greatest Common Factor (GCF) & Least Common Denominator (LCD)', 'Multiplying/Dividing Mixed Numbers: Convert to improper fractions FIRST; multiply by the reciprocal for division'] },
+          { name: 'Unit 3: Decimals, Percentages & Consumer Math (W9–W10)', items: ['Reducing converted fractions to lowest terms: 0.85 = 85/100 = 17/20; 45% = 45/100 = 9/20', 'Discounts + 6% Michigan Sales Tax & Sequential Discounts ($100 -> 20% off = $80 -> extra 10% off $80 = $72)'] }
+        ],
+        defensePrompt: 'Show step-by-step why a $100 tool with a 20% discount followed by an extra 10% coupon costs $72.00 (not $70.00 or $82.00), and show how to reduce 0.85 and 45% into simplest fractions.',
+        questions: [
+          { unit: 'Unit 1', q: 'Evaluate 45 ÷ 5 + 4 × 6 using the Order of Operations (PEMDAS).', opts: ['30', '33', '78', '15'], ans: 1, exp: 'Do division and multiplication from left to right BEFORE addition: (45 ÷ 5) = 9 and (4 × 6) = 24. Then 9 + 24 = 33.' },
+          { unit: 'Unit 1', q: 'Which math property is shown by 6 × (10 + 4) = (6 × 10) + (6 × 4)?', opts: ['Commutative Property', 'Associative Property', 'Distributive Property', 'Identity Property'], ans: 2, exp: 'The Distributive Property multiplies the outside factor (6) across each term inside the parentheses.' },
+          { unit: 'Unit 2', q: 'What is the correct result when you multiply the mixed numbers 2 1/2 × 3 1/3?', opts: ['6 1/6', '8 1/3', '7 1/2', '5 5/6'], ans: 1, exp: 'Convert to improper fractions FIRST: (5/2) × (10/3) = 50/6 = 25/3 = 8 1/3. Never multiply whole numbers and fractions separately!' },
+          { unit: 'Unit 2', q: 'To divide 3/4 ÷ 3/8, what operation do you perform?', opts: ['Multiply 3/4 by the reciprocal 8/3 to get 2', 'Multiply 4/3 by 3/8 to get 1/2', 'Multiply straight across to get 9/32', 'Add the denominators'], ans: 0, exp: 'Keep the first fraction, switch to multiplication, and flip the second fraction (reciprocal): (3/4) × (8/3) = 24/12 = 2.' },
+          { unit: 'Unit 3', q: 'What is the decimal 0.85 written as a fraction reduced to lowest terms?', opts: ['85/100', '17/20', '8/5', '4/5'], ans: 1, exp: '0.85 = 85/100. Divide both numerator and denominator by their GCF of 5: 85 ÷ 5 = 17 and 100 ÷ 5 = 20 -> 17/20.' },
+          { unit: 'Unit 3', q: 'A $100.00 item is on sale for 20% off, and you have a coupon for an additional 10% off the sale price. What is the final price before tax?', opts: ['$70.00', '$72.00', '$82.00', '$75.00'], ans: 1, exp: 'Step 1: 20% off $100 leaves an $80.00 sale price. Step 2: 10% off of $80.00 is $8.00 off -> $80.00 - $8.00 = $72.00.' }
+        ]
+      },
+      'N_ANIMAL': {
+        scope: 'Weeks 1–10 (Taxonomy, Reptiles, Swine Husbandry, Dairy Cattle Breeds & 4-Chamber Ruminant Digestion)',
+        prompt: 'Act as my 7th Grade Animal Science Exam Coach. Quiz me interactively across Unit 1 (Linnaean Taxonomy, Fish, Amphibians & Reptiles), Unit 2 (Swine Breeds & Husbandry), and Unit 3 (Dairy Cattle Breeds Holstein vs. Jersey & 4-Chamber Ruminant Digestion). Ask 1 question at a time and generate a Strengths & Weaknesses Report.',
+        units: [
+          { name: 'Unit 1: Taxonomy, Lower Vertebrates & Reptiles (W1–W7)', items: ['Linnaean Classification: Kingdom, Phylum, Class, Order, Family, Genus, Species', 'Turtles (dorsal carapace fused to spine vs. ventral plastron), Snakes (Jacobson\'s organ, egg tooth), Alligators (U-shaped snout) vs. Crocodiles (V-shaped snout)'] },
+          { name: 'Unit 2: Swine Husbandry — Sus scrofa domesticus (W8)', items: ['Swine Terms: Boar (intact male), Sow (mature female), Gilt (young female), Barrow (castrated male), Farrowing (birthing)', 'Monogastric digestion, hybrid vigor, and 95°F supplemental heat required for newborn piglets'] },
+          { name: 'Unit 3: Dairy Cattle & Ruminant Digestion (W9–W10)', items: ['Holstein-Friesian (black & white, ~1,500 lbs, highest milk volume) vs. Jersey (fawn, ~900 lbs, highest 4.5–5.5% butterfat for butter/cheese)', 'Bovine Terms: Heifer, Cow, Bull, Steer, 9-month (283-day) gestation, Mastitis (udder infection)', '4 Ruminant Stomach Chambers in strict order: 1. Rumen (paunch fermentation), 2. Reticulum (honeycomb/hardware trap), 3. Omasum (manyplies water absorption), 4. Abomasum (true acid/enzyme stomach)'] }
+        ],
+        defensePrompt: 'List the 4 ruminant stomach chambers in exact order (1 to 4) with each chamber\'s job, and compare Holstein-Friesian vs. Jersey cattle based on your Week 9 Kitchen Dairy Audit.',
+        questions: [
+          { unit: 'Unit 1', q: 'In a turtle\'s anatomy, what is the difference between the carapace and the plastron?', opts: ['Carapace is the top (dorsal) shell fused to the spine/ribs; plastron is the bottom (ventral) shell', 'Carapace is the beak; plastron is the tail', 'Carapace is the bottom shell; plastron is the top shell', 'Only tortoises have a carapace'], ans: 0, exp: 'The carapace is the upper dorsal shell fused to the turtle\'s vertebrae and ribs, while the plastron is the lower ventral plate.' },
+          { unit: 'Unit 1', q: 'How can you distinguish an American Alligator from a Crocodile by looking at its snout?', opts: ['Alligators have a broad U-shaped snout; crocodiles have a narrow V-shaped snout', 'Alligators have a V-shaped snout; crocodiles have a U-shaped snout', 'Alligators live only in saltwater oceans', 'Crocodiles have a 2-chambered heart'], ans: 0, exp: 'Alligators have a wide, rounded U-shaped snout suited for crushing turtle shells in freshwater, while crocodiles have a narrow V-shaped snout and salt glands.' },
+          { unit: 'Unit 2', q: 'In swine husbandry, what is the correct term for a young female pig that has not yet farrowed (given birth) to a litter, and what temperature do newborn piglets need?', opts: ['Sow; 65°F', 'Gilt; 95°F supplemental heat', 'Barrow; 80°F', 'Heifer; 95°F'], ans: 1, exp: 'A young female pig before her first litter is a gilt (a mature mother is a sow), and newborn piglets need ~95°F heat to prevent hypothermia.' },
+          { unit: 'Unit 3', q: 'How do Holstein-Friesian and Jersey dairy cattle compare in milk production?', opts: ['Holsteins (black & white) produce the highest volume of fluid milk; Jerseys (smaller fawn cows) produce the richest butterfat percentage (4.5–5.5%)', 'Jerseys weigh 1,800 lbs and produce low-fat milk', 'Holsteins are raised strictly for wool', 'Both breeds have a 3-month gestation'], ans: 0, exp: 'Holsteins lead in total fluid gallon volume, while smaller Jerseys excel in high butterfat and protein density ideal for butter and cheese.' },
+          { unit: 'Unit 3', q: 'What is the exact sequence (1 to 4) of the four stomach compartments in a ruminant cow?', opts: ['1. Abomasum -> 2. Rumen -> 3. Omasum -> 4. Reticulum', '1. Rumen -> 2. Reticulum -> 3. Omasum -> 4. Abomasum', '1. Rumen -> 2. Omasum -> 3. Reticulum -> 4. Abomasum', '1. Reticulum -> 2. Rumen -> 3. Abomasum -> 4. Omasum'], ans: 1, exp: 'Feed travels through 1. Rumen (fermentation vat), 2. Reticulum (honeycomb/cud formation), 3. Omasum (water absorption), and 4. Abomasum (true acid stomach).' },
+          { unit: 'Unit 3', q: 'What is a "heifer," and what is "mastitis" in dairy cattle management?', opts: ['A castrated male; a hoof bruise', 'A young female bovine before her first calf; inflammation/infection of the mammary udder', 'A mature bull; a vitamin deficiency', 'A newborn calf; a stomach chamber'], ans: 1, exp: 'A heifer is a young female cow prior to calving, and mastitis is a bacterial udder infection prevented by strict milking sanitation.' }
+        ]
+      },
+      'N_HIST': {
+        scope: 'Weeks 1–10 (Experiencing History: Creation, Flood, Ice Age, Babel, Mesopotamia & Ancient Egypt Mizr to Moses)',
+        prompt: 'Act as my 7th Grade World History Exam Tutor. Quiz me interactively across Unit 1 (Historical Methods, Creation & Great Flood), Unit 2 (Post-Flood Ice Age, Tower of Babel & Early River Civilizations), and Unit 3 (Ancient Egypt: Mizr, Nile Unification, Old Kingdom Pyramids, Vizier Ankhu & Joseph in Genesis). Ask 1 question at a time and generate a Strengths & Weaknesses Report.',
+        units: [
+          { name: 'Unit 1: Historical Methodology, Creation & The Flood (W1–W5)', items: ['How historians study the past: Written records, archaeology ("fish hooks"), numismatics ("talking coins"), and Scripture', 'Antediluvian (pre-Flood) civilization technology (metallurgy, agriculture, music) & the global Cataclysm'] },
+          { name: 'Unit 2: Post-Flood Ice Age, Babel & Mud Civilizations (W6–W8)', items: ['Post-Flood Ice Age triggered by warm oceans (high evaporation) + volcanic ash blocking sunlight', 'Three post-Flood occupations: Farmers (walled towns), Hunters (Nimrod offering protection for tribute), and Nomads', 'Tower of Babel ziggurat rebellion & 4 pillars of early civilization (metallurgy, calendar, cuneiform writing, wheel)'] },
+          { name: 'Unit 3: Ancient Egypt — From Mizr to Moses (W9–W10)', items: ['Mizr ("Gift of the Nile"): Unification of Upper Egypt (south valley) & Lower Egypt (north Delta) with Memphis as capital at their border', 'Old Kingdom pyramids (resurrection & centralized state power; water-lubricated sledges), Vizier Ankhu & Ka afterlife shrines', 'Middle/New Kingdom Nile flood records (Amenemhat III) & biblical connection to Joseph\'s famine administration in Genesis'] }
+        ],
+        defensePrompt: 'Explain why Memphis was strategically founded at the border between Upper and Lower Egypt, and connect Pharaoh Amenemhat III\'s Nile flood records to Joseph\'s famine preparations in Genesis.',
+        questions: [
+          { unit: 'Unit 1', q: 'In Experiencing History, what does numismatics ("Talking Coins") help historians verify?', opts: ['Ocean temperatures', 'The reigns of ancient rulers, dates, religious symbols, and economic trade routes stamped on metal coins', 'How to bake mud bricks', 'Dinosaur footprints'], ans: 1, exp: 'Ancient coins carry inscriptions, portraits, and dates that corroborate historical rulers and trade networks.' },
+          { unit: 'Unit 2', q: 'What two post-Flood environmental factors combined to trigger the post-Flood Ice Age?', opts: ['Cold oceans and clear skies', 'Warm post-Flood oceans (causing massive evaporation) combined with volcanic dust/ash in the atmosphere reflecting sunlight (cooling the continents)', 'The Earth stopping its rotation', 'Melting glaciers in Egypt'], ans: 1, exp: 'Warm oceans provided abundant moisture for snow while volcanic aerosols cooled the land surfaces, building rapid ice sheets.' },
+          { unit: 'Unit 2', q: 'In post-Flood Mesopotamia (Shinar), what were the three primary occupations described in Lesson 6, and how did hunters like Nimrod become the first kings?', opts: ['Sailors, miners, and scribes', 'Farmers, Hunters, and Nomads; hunters protected walled farming towns from wild beasts and raiders in exchange for tribute', 'Fishermen, priests, and Pharaohs', 'Knights, serfs, and monks'], ans: 1, exp: 'Farmers built towns, nomads herded flocks, and skilled hunters like Nimrod organized defense forces that grew into the first kingdoms.' },
+          { unit: 'Unit 3', q: 'Why was the capital city of Memphis strategically built at the junction between Upper Egypt and Lower Egypt?', opts: ['Because it was in the middle of the Sahara Desert', 'To control trade, taxation, and administration where the southern Nile Valley (Upper Egypt) meets the northern Nile Delta (Lower Egypt)', 'To hide from the Mediterranean Sea', 'Because there was no water there'], ans: 1, exp: 'Memphis sat right at the apex of the Delta, allowing the First Dynasty pharaohs to govern both Upper and Lower Egypt.' },
+          { unit: 'Unit 3', q: 'How did Old Kingdom Egyptians transport massive limestone blocks to build the pyramids, and what was the role of the Ka?', opts: ['By iron railroads; Ka was a tax', 'By Nile barges and water-lubricated wooden sledges over wet sand; the Ka was the spiritual life-force/double that required tomb offerings', 'By elephants; Ka was a river', 'By Roman aqueducts'], ans: 1, exp: 'Pouring water in front of wooden sledges reduced sand friction by half, and Egyptians built tombs/shrines to sustain the deceased\'s Ka.' },
+          { unit: 'Unit 3', q: 'How do Middle Kingdom records under Pharaoh Amenemhat III connect to the biblical account of Joseph in Genesis?', opts: ['They record unusually high Nile floods followed by severe famine years and royal grain storage, matching Joseph\'s administration', 'They describe the fall of Rome', 'They mention Martin Luther', 'They show Egypt had no granaries'], ans: 0, exp: 'Egyptian inscriptions documenting erratic Nile levels and centralized state granaries align directly with Genesis 41.' }
+        ]
+      },
+      'N_SHAK': {
+        scope: 'Weeks 1–7 (Macbeth Complete Acts I–V & Romeo and Juliet Act I)',
+        prompt: 'Act as my 7th Grade Shakespeare Exam Coach. Quiz me interactively across Macbeth Acts I–V and Romeo & Juliet Act I (Verona feud, star-crossed lovers, Benvolio vs. Tybalt foils, and Queen Mab). Ask 1 question at a time and generate a Strengths & Weaknesses Report.',
+        units: [
+          { name: 'Unit 1: Macbeth Acts I–III — Witches, Regicide & Banquo\'s Ghost (W1–W3)', items: ['Witches greet Macbeth as Thane of Glamis, Thane of Cawdor, and future King; Banquo will father kings', 'Macbeth murders King Duncan at Inverness; Malcolm flees to England; Banquo\'s Ghost haunts the banquet'] },
+          { name: 'Unit 2: Macbeth Acts IV–V — Apparitions & Birnam Wood (W4–W6)', items: ['3 Apparitions: Armed Head ("Beware Macduff"), Bloody Child ("None of woman born"), Crowned Child w/ tree (Birnam Wood)', 'Malcolm\'s soldiers carry branches from Birnam Wood; Macduff slays Macbeth and restores Malcolm as King'] },
+          { name: 'Unit 3: Romeo and Juliet Act I — Verona, Foils & Queen Mab (W7)', items: ['Prologue in Verona: Montagues vs. Capulets, "star-crossed lovers" (Fate vs. Free Will), Prince Escalus\'s death penalty decree', 'Dramatic Foils: Peacemaker Benvolio vs. aggressive Tybalt; Lord Capulet tells Paris to wait 2 years and win 13-year-old Juliet\'s heart', 'Mercutio\'s Queen Mab speech vs. Romeo\'s premonition ("Some consequence yet hanging in the stars")'] }
+        ],
+        defensePrompt: 'Using your Week 7 Romeo & Juliet worksheet, explain the tension between Fate ("star-crossed lovers") and Free Will in Act I, and explain why Lord Capulet hesitates when Count Paris asks to marry Juliet.',
+        questions: [
+          { unit: 'Unit 1', q: 'At the beginning of Macbeth, what two titles does Macbeth hold before he ever commits murder?', opts: ['Prince of Cumberland and King', 'Thane of Glamis and (newly named) Thane of Cawdor', 'Earl of Fife and Earl of Northumberland', 'Prince of Verona'], ans: 1, exp: 'Macbeth starts as Thane of Glamis and is awarded the title Thane of Cawdor by King Duncan after the original Cawdor betrays Scotland.' },
+          { unit: 'Unit 1', q: 'Who discovers King Duncan\'s murdered body at Inverness in Act II, and where does Prince Malcolm flee?', opts: ['Banquo discovers him; Malcolm flees to France', 'Macduff discovers him; Malcolm flees to England', 'Lennox discovers him; Malcolm stays at Inverness', 'Lady Macbeth discovers him'], ans: 1, exp: 'Macduff arrives at Inverness to wake the king and discovers the murder; Malcolm flees to England to raise an army.' },
+          { unit: 'Unit 2', q: 'How does Birnam Wood "come to Dunsinane Hill" in Act V of Macbeth?', opts: ['A storm blows the trees up the hill', 'Malcolm orders every soldier to cut down a tree bough from Birnam Wood and carry it in front of himself to disguise their army\'s numbers', 'The Witches move the forest', 'Macduff sets the forest on fire'], ans: 1, exp: 'Malcolm\'s troops use leafy branches from Birnam Wood as military camouflage as they march on Macbeth\'s castle at Dunsinane.' },
+          { unit: 'Unit 3', q: 'In the Prologue of Romeo and Juliet, what city is the play set in, and what punishment does Prince Escalus decree in Scene 1 if the street fighting continues?', opts: ['Set in London; a 100-gold-coin fine', 'Set in Verona, Italy; death ("Your lives shall pay the forfeit of the peace")', 'Set in Rome; banishment to Scotland', 'Set in Venice; prison'], ans: 1, exp: 'The play takes place in Verona, and Prince Escalus warns the Montagues and Capulets that the next disturbance of the peace will be punished by death.' },
+          { unit: 'Unit 3', q: 'In Act I, Scene 2, how does Lord Capulet respond when Count Paris asks for permission to marry 13-year-old Juliet?', opts: ['He forces Juliet to marry Paris that very afternoon', 'He says Juliet is still too young ("a stranger in the world"), asks Paris to wait two more summers, and tells him to win Juliet\'s heart first', 'He banishes Paris from Verona', 'He demands 10,000 ducats'], ans: 1, exp: 'In Scene 2, Capulet is protective of Juliet\'s youth and insists that her own consent ("her scope of choice") matters.' },
+          { unit: 'Unit 3', q: 'Who delivers the famous "Queen Mab" speech in Act I, Scene 4, and what does he say dreams are?', opts: ['Benvolio; messages from angels', 'Mercutio; "the children of an idle brain, begot of nothing but vain fantasy"', 'Tybalt; battle plans', 'Friar Laurence; prophecies'], ans: 1, exp: 'Mercutio delivers the imaginative Queen Mab speech to tease Romeo, arguing that dreams are merely products of an idle brain.' }
+        ]
+      },
+      'N_LIFE': {
+        scope: 'Weeks 1–4 (Master Weekly Schedule, Email Etiquette, Zero-Based Budgeting & Egg Incubator Comparison Report)',
+        prompt: 'Act as my 7th Grade Life Skills Exam Coach. Quiz me interactively across Unit 1 (Master Schedule & Formal Email Etiquette), Unit 2 (Gross vs. Net Income & Zero-Based 50/30/20 Budgeting), and Unit 3 ($100+ Major Purchase Report, 6% MI Tax & 18% APR Financing). Ask 1 question at a time and generate a Strengths & Weaknesses Report.',
+        units: [
+          { name: 'Unit 1: Time Management & Email Etiquette (W1–W2)', items: ['Scheduling non-negotiable responsibilities (school, animal chores) before screen time', '5 parts of a formal email: Subject Line, Salutation, Body, Call to Action, Sign-Off'] },
+          { name: 'Unit 2: Gross vs. Net Income & Zero-Based Budgeting (W3)', items: ['Gross Pay (before taxes) vs. Net Pay (take-home); Fixed vs. Variable expenses', 'Zero-Based Budget (Net Income - Expenses/Savings = $0.00) & 50/30/20 Rule ("Save First")'] },
+          { name: 'Unit 3: Egg Incubator Comparison & 18% APR Financing (W4)', items: ['Comparing Option A: Nurture Right 360 ($220.94 w/ tax & shipping), Option B: Brinsea Ovation 56 ($650.70), Option C: Cimuka T960 S ($3,814.94)', 'Financing Option B at 18% APR ($63.25/mo = $759 total) costs ~$108 in interest (~9 to 14 hours of work at $12/hr)'] }
+        ],
+        defensePrompt: 'Using your Week 4 Egg Incubator report, explain why you chose the Nurture Right 360 ($220.94) over the $3,814.94 commercial model, and explain why paying cash beats 18% APR financing.',
+        questions: [
+          { unit: 'Unit 1', q: 'When building your Master Weekly Schedule, which activities must be time-blocked FIRST?', opts: ['Video games and streaming', 'Non-negotiable responsibilities (academics, livestock chores, family meals, sleep)', 'Random scrolling', 'Midnight snacks'], ans: 1, exp: 'Putting non-negotiable duties in place first ensures your core responsibilities are met while leaving guilt-free unplugged recreation time.' },
+          { unit: 'Unit 1', q: 'Which sign-off is appropriate for a formal email to a teacher or business owner?', opts: ['cya l8r,', 'Sincerely, Nolan Wojcik', 'yo,', 'sent from my phone'], ans: 1, exp: 'A formal sign-off like "Sincerely," or "Best regards," followed by your full name shows respect and clarity.' },
+          { unit: 'Unit 2', q: 'What is the difference between a Fixed Expense and a Variable Expense in a household budget?', opts: ['Fixed expenses stay the same amount each month (like rent/mortgage); variable expenses change month to month (like groceries or gas)', 'Fixed expenses are only for toys', 'Variable expenses never change', 'Fixed expenses are optional'], ans: 0, exp: 'Fixed expenses have a predictable monthly bill, while variable expenses fluctuate based on usage and choices.' },
+          { unit: 'Unit 2', q: 'In the 50/30/20 Budgeting Rule, what do the numbers 50%, 30%, and 20% stand for?', opts: ['50% Video Games, 30% Candy, 20% Needs', '50% Needs, 30% Wants, 20% Savings & Giving ("Pay Yourself First")', '50% Taxes, 30% Rent, 20% Food', '50% Debt, 30% Interest, 20% Fees'], ans: 1, exp: 'Allocating 50% to Needs, 30% to Wants, and 20% to Savings/Giving keeps lifestyle spending balanced and builds savings first.' },
+          { unit: 'Unit 3', q: 'What must be added to an item\'s Base Sticker Price to find its True Total Out-of-Pocket Cost in Michigan?', opts: ['Nothing—sticker price is always the final price', '6% Michigan Sales Tax plus any shipping/freight and required accessories', 'Only the weight of the box', 'A 50% tip'], ans: 1, exp: 'True out-of-pocket cost includes the base price + 6% MI sales tax + shipping/delivery fees.' },
+          { unit: 'Unit 3', q: 'In your Week 4 Egg Incubator report, why was the Nurture Right 360 ($220.94 total) a smarter homestead choice than financing the $650.70 Brinsea at 18% APR or buying the $3,814.94 commercial incubator?', opts: ['Because it holds 5,000 ostrich eggs', 'It meets a family homestead\'s 22-egg hatching capacity at an affordable cash price without paying extra hours of labor in 18% APR credit interest', 'Because it has no warranty', 'Because it runs without electricity'], ans: 1, exp: 'Smart stewardship matches the tool to your actual homestead scale and pays cash to avoid losing hard-earned labor hours to 18% APR interest.' }
+        ]
+      },
+      'N_HOME': {
+        scope: 'Weeks 1–4 (Providential Planning, Natural Cleaners, Acid-Base Body Care & Homestead Healing Salve)',
+
+        prompt: 'Act as my 7th Grade Homesteading Exam Coach. Quiz me interactively across Unit 1 (Providential Planning & Pantry Audits), Unit 2 (Acid-Base Chemistry of ACV & Baking Soda), and Unit 3 (Calendula/Lavender Healing Salve, Cost Stewardship & Canning Safety). Ask 1 question at a time and generate a Strengths & Weaknesses Report.',
+        units: [
+          { name: 'Unit 1: Homestead Planning & Pantry Stewardship (W1)', items: ['Providential Planning: Preparing firewood and canning supplies seasons ahead of need', 'FIFO Pantry Audit: Rotating oldest jars forward and tracking real family food use'] },
+          { name: 'Unit 2: Acid-Base Chemistry of Natural Cleaners & Body Care (W2–W4)', items: ['Apple Cider Vinegar (acetic acid) smooths hair cuticles and dissolves mineral scale', 'Baking Soda (alkaline base) neutralizes acidic odors; Pure Essential Oils vs. synthetic fragrances'] },
+          { name: 'Unit 3: Healing Salve Lab & Economic Stewardship (W3–W4)', items: ['Homestead All-Purpose Healing Salve: Olive oil infused with calendula & lavender, thickened with beeswax', 'Cost Stewardship: 12 bottles of homemade cleaner at $0.25/bottle ($3/yr) vs. $6.00 commercial ($72/yr) saves $69/year'] }
+        ],
+        defensePrompt: 'Using your Week 4 Homesteading worksheet, list the ingredients in your Homestead All-Purpose Healing Salve and show the math for how making 12 bottles of natural cleaner saves $69.00 per year.',
+        questions: [
+          { unit: 'Unit 1', q: 'What does FIFO stand for when organizing a homestead pantry?', opts: ['Fast-In, Fast-Out', 'First-In, First-Out (using the oldest preserved jars first so nothing expires)', 'Find-It, Forget-It', 'Fruit-In, Freezer-Out'], ans: 1, exp: 'FIFO means placing newly canned jars in the back and rotating older jars to the front so food is used while fresh.' },
+
+          { unit: 'Unit 2', q: 'Why does an Apple Cider Vinegar (ACV) hair rinse make hair smooth and shiny after washing with soap?', opts: ['ACV is an acid that restores the scalp\'s natural acidic pH and helps the hair cuticle scales lie flat', 'ACV is made of plastic', 'ACV is a strong alkaline bleach', 'ACV dyes hair green'], ans: 0, exp: 'Soap is alkaline and raises hair cuticles; mildly acidic ACV neutralizes soap residue and flattens the cuticle.' },
+          { unit: 'Unit 2', q: 'Why are pure cold-pressed or steam-distilled Essential Oils (like lavender or tea tree) preferred over synthetic fragrance oils on the homestead?', opts: ['Synthetic oils are more expensive', 'Pure essential oils contain natural plant compounds with real antimicrobial and soothing properties, without toxic artificial chemicals', 'Synthetic oils come from beeswax', 'Essential oils never smell good'], ans: 1, exp: 'True essential oils provide natural therapeutic and cleaning benefits rather than synthetic chemical perfumes.' },
+          { unit: 'Unit 3', q: 'Which four ingredients are combined to make the Homestead All-Purpose Healing Salve in your Week 4 lab?', opts: ['Vinegar, salt, water, and flour', 'Olive oil (carrier oil), beeswax, dried calendula flowers, and lavender essential oil', 'Motor oil, baking soda, and lemon juice', 'Butter, sugar, and cinnamon'], ans: 1, exp: 'Olive oil extracts the skin-soothing properties of calendula and lavender, and melted beeswax sets it into a firm salve.' },
+          { unit: 'Unit 3', q: 'If 12 bottles of commercial cleaner cost $6.00 each ($72.00/year), and 12 bottles of homemade natural cleaner cost $0.25 each ($3.00/year), how much money does your family save per year?', opts: ['$36.00 per year', '$69.00 per year', '$72.00 per year', '$12.00 per year'], ans: 1, exp: '$72.00 (commercial) - $3.00 (homemade) = $69.00 saved every single year.' },
+          { unit: 'Unit 3', q: 'When inspecting backyard chickens on the homestead, what is "bumblefoot"?', opts: ['A feather color', 'A bacterial infection and swollen dark scab on the bottom pad of a chicken\'s foot caused by splinters or rough roosts', 'A type of chicken feed', 'A breed of duck'], ans: 1, exp: 'Monthly chicken inspections check the footpads for bumblefoot scabs, as well as mites and vent health.' }
+        ]
+      }
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadSavedExamState();
+      applyThemeClass();
+      fetchPortalData();
+    });
+
+
+    function loadSavedExamState() {
+      try {
+        const raw = localStorage.getItem('WOJCIK_NATIVE_EXAM_STATE_V2');
+        if (raw) EXAM_STATE = JSON.parse(raw);
+      } catch (e) {}
+    }
+
+    function saveLocalExamState() {
+
+      try {
+        localStorage.setItem('WOJCIK_NATIVE_EXAM_STATE_V2', JSON.stringify(EXAM_STATE));
+      } catch (e) {}
+    }
+
+    function getCourseExamState(courseId) {
+      if (!EXAM_STATE[courseId]) {
+        EXAM_STATE[courseId] = { answers: {}, checkedItems: {}, defenseText: '', lastSynced: '' };
+
+      }
+      return EXAM_STATE[courseId];
+    }
+
+
+    function applyThemeClass() {
+      const body = document.getElementById('appBody');
+      body.className = 'theme-' + CURRENT_VIEW;
+    }
+
+
+
+    function getBaseWebAppUrl() {
+          if (window.location.hostname && !window.location.hostname.includes('script.google.com')) {
+                return window.location.origin + window.location.pathname;
+                    }
+                        if (PORTAL_DATA && PORTAL_DATA.webAppUrl) return PORTAL_DATA.webAppUrl;
+                            return window.location.href.split('?')[0];
+
+                                  }
+
+    function fetchPortalData() {
+      google.script.run
+        .withSuccessHandler(res => {
+          PORTAL_DATA = res;
+          ensureSelectedCourse();
+          renderApp();
+        })
+        .withFailureHandler(err => {
+          document.getElementById('mainContainer').innerHTML =
+            `<div class="panel">Error loading portal: ${err.message}</div>`;
+        })
+        .getPortalData({ week: SELECTED_WEEK });
+    }
+
+    function ensureSelectedCourse() {
+
+      if (!PORTAL_DATA || !PORTAL_DATA.courses) return;
+      const studentName = CURRENT_VIEW === 'ash' ? 'Ash' : (CURRENT_VIEW === 'nolan' ? 'Nolan' : '');
+      const list = studentName
+        ? PORTAL_DATA.courses.filter(c => c.cadet.toLowerCase() === studentName.toLowerCase())
+        : PORTAL_DATA.courses;
+
+
+      if (list.length && (!SELECTED_COURSE_ID || !list.some(c => c.id === SELECTED_COURSE_ID))) {
+        SELECTED_COURSE_ID = list[0].id;
+      }
+    }
+
+    function onWeekChange(newWk) {
+      SELECTED_WEEK = newWk;
+      STUDENT_SUBVIEW = 'daily';
+      fetchPortalData();
+    }
+
+    function onDayChange(newDay) {
+      SELECTED_DAY = newDay;
+      STUDENT_SUBVIEW = 'daily';
+      if (newDay === 'D5') DOC_TAB_MODE = 'quiz';
+      renderApp();
+    }
+
+    function onCourseChange(newCourseId) {
+      SELECTED_COURSE_ID = newCourseId;
+      renderApp();
+    }
+
+
+    function toggleStudentExamHub(forceMode) {
+      if (forceMode) {
+        STUDENT_SUBVIEW = forceMode;
+
+      } else {
+
+        STUDENT_SUBVIEW = (STUDENT_SUBVIEW === 'exam_prep') ? 'daily' : 'exam_prep';
+      }
+
+
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      renderApp();
+    }
+
+    function switchAdminPreview(targetView, subViewMode) {
+      if (LOCKED_ROLE !== 'admin') return;
+      CURRENT_VIEW = targetView;
+      STUDENT_SUBVIEW = subViewMode || 'daily';
+      applyThemeClass();
+      ensureSelectedCourse();
+
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      renderApp();
+    }
+
+
+    
+    function sanitizeExamDiagnostic(diag) {
+      if (!diag) return diag;
+        let correct = diag.correct;
+          if (correct instanceof Date) {
+              correct = (correct.getUTCMonth() + 1) + '/' + correct.getUTCDate();
+                } else if (typeof correct === 'string') {
+
+                    if (/^\d{4}-\d{2}-\d{2}/.test(correct)) {
+                          var match = correct.match(/^\d{4}-(\d{2})-(\d{2})/);
+                                if (match) {
+                                        correct = parseInt(match[1], 10) + '/' + parseInt(match[2], 10);
+                                              }
+                                                  }
+                                                    }
+                                                    
+                                                      var mastery = diag.masteryPct;
+                                                        if (typeof mastery === 'number') {
+                                                            mastery = mastery <= 1 ? Math.round(mastery * 100) + '%' : Math.round(mastery) + '%';
+                                                              } else if (typeof mastery === 'string') {
+                                                                  mastery = mastery.trim();
+                                                                      if (mastery.indexOf('%') === -1) {
+                                                                            var val = parseFloat(mastery);
+                                                                                  if (!isNaN(val)) {
+                                                                                          mastery = val <= 1 ? Math.round(val * 100) + '%' : Math.round(val) + '%';
+                                                                                                }
+                                                                                                    }
+
+                                                                                                      }
+                                                                                                      
+                                                                                                        return Object.assign({}, diag, { correct: correct, masteryPct: mastery });
+                                                                                                        }
+                                                                                                        function getCourseExamDiagnostic(course) {
+      if (!PORTAL_DATA || !PORTAL_DATA.examReadiness || !course) return null;
+      const studentMap = PORTAL_DATA.examReadiness[course.cadet] || {};
+      const entries = Object.keys(studentMap);
+      if (!entries.length) return null;
+
+      const subjLower = String(course.subject || '').toLowerCase();
+      for (let i = 0; i < entries.length; i++) {
+        const key = entries[i];
+        const item = studentMap[key];
+        const keyLower = String(key || '').toLowerCase();
+        const titleLower = String(item.courseTitle || '').toLowerCase();
+        if (
+          keyLower === String(course.id || '').toLowerCase() ||
+
+          keyLower.indexOf(subjLower) !== -1 ||
+          titleLower.indexOf(subjLower) !== -1 ||
+
+
+          subjLower.indexOf(keyLower) !== -1
+
+        ) {
+
+
+          return  sanitizeExamDiagnostic(item);
+        }
+      }
+      return null;
+    }
+
+
+
+
+
+function renderApp() {
+    renderHeader();
+      try {
+          if (CURRENT_VIEW === 'ash') {
+                document.title = (STUDENT_SUBVIEW === 'exam_prep') ? 'Ash Exam Prep - Wojcik Homeschool' : 'Ash Portal - Wojcik Homeschool';
+                    } else if (CURRENT_VIEW === 'nolan') {
+                          document.title = (STUDENT_SUBVIEW === 'exam_prep') ? 'Nolan Exam Prep - Wojcik Homeschool' : 'Nolan Portal - Wojcik Homeschool';
+                              } else {
+                                    document.title = 'Homeschool Executive Overview & Compliance';
+                                        }
+                                          } catch (e) {}
+
+                                            if (CURRENT_VIEW === 'ash' || CURRENT_VIEW === 'nolan') {
+                                                if (STUDENT_SUBVIEW === 'exam_prep') {
+                                                      renderNativeStudentExamHub();
+                                                          } else {
+
+                                                                renderStudentPortal();
+                                                                    }
+                                                                      } else {
+                                                                          renderParentAdminOverview();
+                                                                            }
+
+                                                                                                 }
+
+
+    function renderHeader() {
+      const header = document.getElementById('headerBar');
+      const courses = (PORTAL_DATA && PORTAL_DATA.courses) ? PORTAL_DATA.courses : [];
+      const weeks = ['W1','W2','W3','W4','W5','W6','W7','W8','W9','W10','W11','W12'];
+
+      if (CURRENT_VIEW === 'ash' || CURRENT_VIEW === 'nolan') {
+        const isAsh = CURRENT_VIEW === 'ash';
+        const studentName = isAsh ? 'Ash' : 'Nolan';
+        const myCourses = courses.filter(c => c.cadet === studentName);
+
+        const titleHtml = isAsh
+          ? `<span>🎀🍓 Ash's Hello Kitty Study Cafe</span>`
+          : `<span>🦆🌾 Nolan's Duck & Goose Marsh Lodge</span>`;
+
+        const subtitleHtml = isAsh
+          ? `9th Grade High School Portal • Sweet & Focused Daily Workspace`
+          : `7th Grade Field & Study Portal • Waterfowl & Timber Edition`;
+
+        const isExamMode = (STUDENT_SUBVIEW === 'exam_prep');
+
+        header.innerHTML = `
+          <div>
+            <div class="brand-title">${titleHtml}</div>
+            <div class="brand-sub">${subtitleHtml}</div>
+          </div>
+
+          <div class="selector-bar">
+            <button class="btn btn-exam-toggle ${isExamMode ? 'active-exam' : ''}" onclick="toggleStudentExamHub()">
+              ${isExamMode ? '📚 Return to Daily Class Workspace' : '🎯 Semester Exam Prep (Day 1–Today)'}
+            </button>
+
+            <div class="control-group">
+              <span class="control-label">Select Class (7 Courses)</span>
+              <select onchange="onCourseChange(this.value)">
+                ${myCourses.map(c => {
+                  const doneToday = c.dayStatus && c.dayStatus[SELECTED_DAY];
+                  return `<option value="${c.id}" ${c.id === SELECTED_COURSE_ID ? 'selected' : ''}>
+                    ${doneToday ? '✓ ' : ''}${c.subject} (${c.score})
+                  </option>`;
+                }).join('')}
+              </select>
+            </div>
+
+            <div class="control-group">
+              <span class="control-label">Select Week</span>
+              <select onchange="onWeekChange(this.value)">
+                ${weeks.map(w => `<option value="${w}" ${w === SELECTED_WEEK ? 'selected' : ''}>Week ${w.replace('W','')}</option>`).join('')}
+              </select>
+            </div>
+
+
+            <div class="control-group">
+              <span class="control-label">Select Day</span>
+              <select onchange="onDayChange(this.value)">
+                ${Object.keys(DAY_LABELS).map(dKey => `
+                  <option value="${dKey}" ${dKey === SELECTED_DAY ? 'selected' : ''}>${DAY_LABELS[dKey]}</option>
+                `).join('')}
+              </select>
+            </div>
+
+            ${LOCKED_ROLE === 'admin' ? `
+              <button class="btn btn-secondary" onclick="switchAdminPreview('admin')">⬅ Back to Parent Overview</button>
+            ` : ''}
+          </div>
+        `;
+      } else {
+        header.innerHTML = `
+          <div>
+            <div class="brand-title">📊 Wojcik Homeschool Executive Overview</div>
+            <div class="brand-sub">Weekly Completion Tracking • Semester Exam Diagnostics • Gemini 3.8 Flash Grader • MI Compliance</div>
+          </div>
+
+          <div class="selector-bar">
+            <div class="control-group">
+              <span class="control-label">Active Tracking Week</span>
+              <select onchange="onWeekChange(this.value)">
+                ${weeks.map(w => `<option value="${w}" ${w === SELECTED_WEEK ? 'selected' : ''}>Week ${w.replace('W','')} (${w})</option>`).join('')}
+              </select>
+            </div>
+
+            <div class="control-group">
+              <span class="control-label">Active Day Column</span>
+              <select onchange="onDayChange(this.value)">
+                ${Object.keys(DAY_LABELS).map(dKey => `
+                  <option value="${dKey}" ${dKey === SELECTED_DAY ? 'selected' : ''}>${DAY_LABELS[dKey]}</option>
+                `).join('')}
+              </select>
+            </div>
+
+
+
+            <button class="btn" style="background:#ff3385;" onclick="switchAdminPreview('ash', 'daily')">🎀 Ash Portal</button>
+            <button class="btn" style="background:#be185d;" onclick="switchAdminPreview('ash', 'exam_prep')">🎯 Ash Exam Hub</button>
+            <button class="btn" style="background:#1b4d3e;" onclick="switchAdminPreview('nolan', 'daily')">🦆 Nolan Portal</button>
+            <button class="btn" style="background:#0f766e;" onclick="switchAdminPreview('nolan', 'exam_prep')">🎯 Nolan Exam Hub</button>
+
+            <button class="btn btn-secondary" onclick="fetchPortalData()">🔄 Sync Sheet</button>
+
+            <button class="btn btn-secondary" onclick="downloadStandaloneIndex()" title="Export standalone index.html for GitHub Pages">📥 Export HTML</button>
+
+          </div>
+        `;
+      }
+    }
+
+
+
+
+
+
+
+
+
+
+
+function downloadStandaloneIndex() {
+    const html = CACHED_RAW_INDEX_HTML || ('<!DOCTYPE html>\n' + document.documentElement.outerHTML);
+      let clean = html
+          .replace(/<\?=\s*lockedRole\s*\|\|\s*['"][^'"]*['"]\s*\?>/g, 'admin')
+              .replace(/<\?=\s*lockedRole\s*\?>/g, 'admin')
+                  .replace(/<\?=\s*initialWeek[^?]*\?>/g, 'W9')
+                      .replace(/<\?=\s*initialDay[^?]*\?>/g, 'D4')
+                          .replace(/<\?=\s*webAppUrl\s*\?>/g, GAS_EXEC_URL);
+
+                            const blob = new Blob([clean], { type: 'text/html;charset=utf-8' });
+                              const url = URL.createObjectURL(blob);
+                                const a = document.createElement('a');
+                                  a.style.display = 'none';
+                                    a.href = url;
+                                      a.download = 'index.html';
+                                        document.body.appendChild(a);
+                                          a.click();
+                                            setTimeout(function() {
+                                                if (a.parentNode) a.parentNode.removeChild(a);
+                                                  }, 60000);
+                                                  }
+
+
+
+
+
+    
+
+    function computeExamMetrics(courseId) {
+      const bank = EXAM_BANK[courseId];
+      const st = getCourseExamState(courseId);
+      if (!bank) return { answered: 0, correct: 0, total: 6, pct: 0, unitStats: {}, weakUnits: [] };
+
+      let answered = 0;
+      let correct = 0;
+      const unitStats = {};
+
+      bank.questions.forEach((qObj, idx) => {
+        if (!unitStats[qObj.unit]) unitStats[qObj.unit] = { right: 0, total: 0 };
+        unitStats[qObj.unit].total++;
+        const chosen = st.answers[idx];
+        if (chosen !== undefined && chosen !== null) {
+          answered++;
+          if (chosen === qObj.ans) {
+            correct++;
+            unitStats[qObj.unit].right++;
+          }
+        }
+      });
+
+      const total = bank.questions.length;
+      const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
+      const weakUnits = [];
+      Object.keys(unitStats).forEach(uName => {
+        const u = unitStats[uName];
+        const uPct = u.total > 0 ? Math.round((u.right / u.total) * 100) : 0;
+        u.pct = uPct;
+        if (uPct < 80) weakUnits.push(`${uName} (${uPct}%)`);
+      });
+
+      return { answered, correct, total, pct, unitStats, weakUnits };
+    }
+
+    function renderNativeStudentExamHub() {
+      const container = document.getElementById('mainContainer');
+      const isAsh = CURRENT_VIEW === 'ash';
+      const studentName = isAsh ? 'Ash' : 'Nolan';
+      const courses = ((PORTAL_DATA && PORTAL_DATA.courses) ? PORTAL_DATA.courses : []).filter(c => c.cadet === studentName);
+      const course = courses.find(c => c.id === SELECTED_COURSE_ID) || courses[0];
+      if (!course) {
+        container.innerHTML = `<div class="panel">No courses found.</div>`;
+        return;
+      }
+
+      const bank = EXAM_BANK[course.id];
+      const st = getCourseExamState(course.id);
+      const metrics = computeExamMetrics(course.id);
+
+      container.innerHTML = `
+        <!-- TOP BANNER & COURSE SELECTOR PILLS -->
+        <div class="panel" style="margin-bottom:20px;">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">
+                ${isAsh ? '🎀 Ash\'s 9th Grade' : '🦆 Nolan\'s 7th Grade'} Cumulative Semester Exam Prep & Diagnostic Hub (Day 1 to Today)
+              </h2>
+              <div class="brand-sub">
+                Select any of your 7 classes below to review every unit from Day 1 to Today, test your mastery, see your unit strengths & weaknesses, and sync your scorecard to Dad's Grade Tracker!
+              </div>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="btn btn-success" onclick="syncSingleExamCourse('${course.id}', this)">
+                ☁️ Sync ${course.subject} Score to Grade Tracker
+              </button>
+              <button class="btn btn-secondary" onclick="toggleStudentExamHub('daily')">
+                ⬅ Back to Daily Assignments
+              </button>
+            </div>
+          </div>
+
+          <div class="exam-course-pills">
+            ${courses.map(c => {
+              const m = computeExamMetrics(c.id);
+              const badge = m.answered > 0 ? ` • ${m.pct}% (${m.correct}/${m.total})` : '';
+              return `
+                <button class="exam-course-pill ${c.id === course.id ? 'active' : ''}" onclick="onCourseChange('${c.id}')">
+                  ${c.subject}${badge}
+                </button>
+              `;
+            }).join('')}
+          </div>
+        </div>
+
+        <div class="student-workspace">
+          <!-- LEFT COLUMN: CUMULATIVE STUDY GUIDE (DAY 1 TO TODAY) + NOTEBOOKLM COACH -->
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <h3 class="panel-title">📖 ${course.subject} — Cumulative Study Guide</h3>
+                <div class="brand-sub">Scope: <strong>${bank.scope}</strong></div>
+              </div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button class="btn btn-secondary" onclick="copyNotebookCoachPrompt('${course.id}', this)">
+                  📋 Copy NotebookLM Coach Prompt
+                </button>
+                ${course.notebookUrl ? `
+                  <a class="btn" href="${course.notebookUrl}" target="_blank">
+                    🧠 Open ${course.subject} NotebookLM ↗
+                  </a>
+                ` : ''}
+              </div>
+            </div>
+
+            <div class="daily-focus-banner">
+              💡 <strong>How to Study with NotebookLM:</strong> Check off each concept below as you review it. Click <strong>"📋 Copy NotebookLM Coach Prompt"</strong> and paste it into your <strong>${course.notebookName}</strong> chat to get unlimited interactive practice questions from your exact class readings!
+            </div>
+
+            ${bank.units.map((u, uIdx) => `
+              <div class="exam-unit-card">
+                <div style="font-weight:700; font-size:1rem; color:var(--accent-primary); margin-bottom:8px;">
+                  ${u.name}
+                </div>
+                ${u.items.map((itemText, iIdx) => {
+                  const chkKey = `${uIdx}_${iIdx}`;
+                  const isChecked = Boolean(st.checkedItems[chkKey]);
+                  return `
+                    <label style="display:flex; align-items:flex-start; gap:8px; padding:5px 0; cursor:pointer; font-size:0.9rem; ${isChecked ? 'text-decoration:line-through; opacity:0.7;' : ''}">
+                      <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleExamStudyItem('${course.id}', '${chkKey}', this.checked)" style="margin-top:3px;">
+                      <span>${itemText}</span>
+                    </label>
+                  `;
+                }).join('')}
+              </div>
+            `).join('')}
+
+            <!-- HANDS-ON / AI-PROOF WRITTEN EXAM DEFENSE -->
+            <div class="exam-unit-card" style="border-style:dashed;">
+              <div style="font-weight:700; color:var(--accent-primary); margin-bottom:6px;">
+                🛡️ Part 2: "AI-Proof" Hands-On & Synthesis Exam Defense
+              </div>
+              <div style="font-size:0.88rem; margin-bottom:8px;">
+                ${bank.defensePrompt}
+              </div>
+              <textarea
+                rows="4"
+                style="width:100%;"
+                placeholder="Write your step-by-step explanation or hands-on defense here..."
+                oninput="updateExamDefenseText('${course.id}', this.value)">${st.defenseText || ''}</textarea>
+            </div>
+          </div>
+
+          <!-- RIGHT COLUMN: STRENGTHS/WEAKNESSES FEEDBACK + 6-QUESTION DIAGNOSTIC -->
+          <div style="display:flex; flex-direction:column; gap:20px;">
+
+            <!-- REAL-TIME STRENGTHS & WEAKNESSES SCORECARD -->
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3 class="panel-title">📊 Strengths & Weaknesses Feedback</h3>
+                  <div class="brand-sub">
+                    Answered: <strong>${metrics.answered}/${metrics.total}</strong> • Current Score: <strong>${metrics.pct}% (${metrics.correct}/${metrics.total})</strong>
+                    ${st.lastSynced ? ` • Synced: ${st.lastSynced}` : ''}
+                  </div>
+                </div>
+                <button class="btn btn-secondary" style="padding:6px 10px; font-size:0.78rem;" onclick="resetCourseExamQuiz('${course.id}')">
+                  🔄 Reset Quiz
+                </button>
+              </div>
+
+              <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:12px;">
+                ${Object.keys(metrics.unitStats).map(uKey => {
+                  const uObj = metrics.unitStats[uKey];
+                  const barColor = uObj.pct >= 80 ? '#16a34a' : (uObj.pct >= 50 ? '#d97706' : '#dc2626');
+                  const statusLabel = uObj.pct >= 80 ? '✓ Strong Mastery' : '⚠ Priority Review (<80%)';
+                  return `
+                    <div>
+                      <div style="display:flex; justify-content:space-between; font-size:0.84rem; font-weight:700;">
+                        <span>${uKey}: ${uObj.right}/${uObj.total} (${uObj.pct}%)</span>
+                        <span style="color:${barColor};">${statusLabel}</span>
+                      </div>
+                      <div class="unit-bar-track">
+                        <div class="unit-bar-fill" style="width:${uObj.pct}%; background:${barColor};"></div>
+                      </div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+
+              <div class="daily-focus-banner" style="margin-bottom:12px;">
+                ${metrics.answered === 0
+                  ? '📝 Complete the 6 diagnostic questions below to see which units are your strongest and which units need focused review in NotebookLM!'
+                  : (metrics.weakUnits.length === 0
+                      ? '🏆 <strong>All Units Above 80% Mastery!</strong> You are ready for the semester exam in this subject. Click "Sync Score to Grade Tracker" below!'
+                      : `🎯 <strong>Recommended Remediation:</strong> Focus your NotebookLM review on <strong>${metrics.weakUnits.join(', ')}</strong> before taking the final exam.`)}
+              </div>
+
+              <button class="btn btn-success" style="width:100%; justify-content:center;" onclick="syncSingleExamCourse('${course.id}', this)">
+                ☁️ Sync ${course.subject} Diagnostic & Defense to Grade Tracker
+              </button>
+            </div>
+
+            <!-- 6-QUESTION INTERACTIVE DIAGNOSTIC QUIZ -->
+            <div class="panel">
+              <div class="panel-header">
+                <h3 class="panel-title">🎯 6-Question Unit-Tagged Diagnostic</h3>
+                <span class="brand-sub">Immediate Step-by-Step Feedback</span>
+              </div>
+
+              ${bank.questions.map((qObj, qIdx) => {
+                const chosenIdx = st.answers[qIdx];
+                const isAnswered = (chosenIdx !== undefined && chosenIdx !== null);
+                const isRight = (chosenIdx === qObj.ans);
+                return `
+                  <div class="exam-q-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                      <span class="status-chip" style="background:var(--accent-badge); color:var(--text-primary);">
+                        Question ${qIdx + 1} • ${qObj.unit}
+                      </span>
+                      ${isAnswered ? `
+                        <span class="status-chip ${isRight ? 'chip-done' : 'chip-missing'}">
+                          ${isRight ? '✓ Correct' : '✗ Review Needed'}
+                        </span>
+                      ` : ''}
+                    </div>
+                    <div style="font-weight:700; font-size:0.95rem; margin-bottom:8px;">
+                      ${qObj.q}
+                    </div>
+                    ${qObj.opts.map((optText, oIdx) => {
+                      let btnClass = 'exam-opt-btn';
+                      if (isAnswered) {
+                        if (oIdx === qObj.ans) btnClass += ' opt-correct';
+                        else if (oIdx === chosenIdx) btnClass += ' opt-wrong';
+                      }
+                      const letters = ['A', 'B', 'C', 'D'];
+                      return `
+                        <button class="${btnClass}" onclick="selectExamAnswer('${course.id}', ${qIdx}, ${oIdx})">
+                          <strong>${letters[oIdx]}.</strong> ${optText}
+                        </button>
+                      `;
+                    }).join('')}
+                    ${isAnswered ? `
+                      <div class="exam-explain-box" style="background:${isRight ? '#dcfce7' : '#fef9c3'}; color:${isRight ? '#14532d' : '#713f12'};">
+                        <strong>Explanation:</strong> ${qObj.exp}
+                      </div>
+                    ` : ''}
+                  </div>
+                `;
+              }).join('')}
+            </div>
+
+          </div>
+        </div>
+      `;
+    }
+
+    function selectExamAnswer(courseId, qIdx, optIdx) {
+      const st = getCourseExamState(courseId);
+      st.answers[qIdx] = optIdx;
+      saveLocalExamState();
+      renderNativeStudentExamHub();
+    }
+
+    function toggleExamStudyItem(courseId, chkKey, isChecked) {
+      const st = getCourseExamState(courseId);
+      st.checkedItems[chkKey] = Boolean(isChecked);
+      saveLocalExamState();
+      renderNativeStudentExamHub();
+    }
+
+    function updateExamDefenseText(courseId, val) {
+      const st = getCourseExamState(courseId);
+      st.defenseText = val;
+      saveLocalExamState();
+    }
+
+    function resetCourseExamQuiz(courseId) {
+      const st = getCourseExamState(courseId);
+      st.answers = {};
+      saveLocalExamState();
+      renderNativeStudentExamHub();
+    }
+
+    function copyNotebookCoachPrompt(courseId, btnEl) {
+      const bank = EXAM_BANK[courseId];
+      if (!bank) return;
+      navigator.clipboard.writeText(bank.prompt).then(() => {
+        const orig = btnEl.innerText;
+        btnEl.innerText = '✓ Prompt Copied! Paste in NotebookLM';
+        setTimeout(() => { btnEl.innerText = orig; }, 2200);
+      });
+    }
+
+    function syncSingleExamCourse(courseId, btnEl) {
+      const courses = (PORTAL_DATA && PORTAL_DATA.courses) ? PORTAL_DATA.courses : [];
+      const course = courses.find(c => c.id === courseId);
+      const bank = EXAM_BANK[courseId];
+      if (!course || !bank) return;
+
+      const st = getCourseExamState(courseId);
+      const metrics = computeExamMetrics(courseId);
+
+      const unitBreakdownArr = Object.keys(metrics.unitStats).map(uName => {
+        const u = metrics.unitStats[uName];
+        return `${uName}: ${u.right}/${u.total} (${u.pct}%)`;
+      });
+
+      const totalChecklist = bank.units.reduce((acc, u) => acc + u.items.length, 0);
+      const checkedCount = Object.values(st.checkedItems || {}).filter(Boolean).length;
+
+      const payload = {
+        student: course.cadet,
+        grade: course.cadet === 'Ash' ? '9th Grade' : '7th Grade',
+        courseId: course.id,
+        courseName: course.subject,
+        subject: course.subject,
+        answeredCount: metrics.answered,
+        correct: metrics.correct,
+        totalQuestions: metrics.total,
+        scorePct: metrics.pct,
+        masteryPct: metrics.pct,
+        unitBreakdownText: unitBreakdownArr.join(' | '),
+        weakUnitsText: metrics.weakUnits.length ? metrics.weakUnits.join(', ') : 'None (All Units >= 80%)',
+        defenseResponse: st.defenseText || '[Not submitted yet]',
+        studyProgressText: `${checkedCount}/${totalChecklist} topics checked`,
+        timestamp: new Date().toLocaleString()
+
+      };
+
+      const origText = btnEl.innerText;
+      btnEl.disabled = true;
+      btnEl.innerText = '☁️ Syncing to Grade Tracker...';
+
+      google.script.run
+        .withSuccessHandler(res => {
+          btnEl.disabled = false;
+          btnEl.innerText = '✓ Synced to Master Grade Tracker!';
+          st.lastSynced = new Date().toLocaleTimeString();
+          saveLocalExamState();
+
+          if (!PORTAL_DATA.examReadiness) PORTAL_DATA.examReadiness = { Ash: {}, Nolan: {} };
+          if (!PORTAL_DATA.examReadiness[course.cadet]) PORTAL_DATA.examReadiness[course.cadet] = {};
+          PORTAL_DATA.examReadiness[course.cadet][course.id] = {
+            courseTitle: course.subject,
+            masteryPct: metrics.pct + '%',
+            correct: metrics.correct + '/' + metrics.total,
+            unitBreakdown: payload.unitBreakdownText,
+            weakUnits: payload.weakUnitsText,
+            aiProofDefense: payload.defenseResponse
+          };
+
+          setTimeout(() => { renderNativeStudentExamHub(); }, 1200);
+        })
+        .withFailureHandler(err => {
+          btnEl.disabled = false;
+          btnEl.innerText = origText;
+          alert('Sync error: ' + err.message);
+        })
+        .saveExamDiagnostic(payload);
+    }
+
+    /* =========================================================================
+       STUDENT DAILY PORTAL RENDERER (ASH HELLO KITTY / NOLAN DUCK & GOOSE)
+       ========================================================================= */
+    function renderStudentPortal() {
+      const container = document.getElementById('mainContainer');
+      const courses = (PORTAL_DATA && PORTAL_DATA.courses) ? PORTAL_DATA.courses : [];
+      const course = courses.find(c => c.id === SELECTED_COURSE_ID) || courses[0];
+      if (!course) {
+        container.innerHTML = `<div class="panel">No courses found.</div>`;
+        return;
+      }
+
+      const isAsh = CURRENT_VIEW === 'ash';
+      const themeIcon = isAsh ? '🎀' : '🦆';
+      const tutorTitle = isAsh ? '🐱 Hello Kitty Socratic Study Helper' : '🦆 Timber Lodge Socratic Field Guide';
+
+      const dayPlanText = (course.dailyPlan && course.dailyPlan[SELECTED_DAY]) || course.missionTask;
+      const isTodayDone = Boolean(course.dayStatus && course.dayStatus[SELECTED_DAY]) || Boolean(course.dailyDone);
+      const examDiag = getCourseExamDiagnostic(course);
+
+      let activeContentText = course.readingText || '';
+      if (DOC_TAB_MODE === 'worksheet') activeContentText = course.worksheetText || course.readingText;
+      if (DOC_TAB_MODE === 'quiz') activeContentText = course.quizText || 'Friday Mastery Quiz questions open in Google Docs.';
+
+      const chatHistory = TUTOR_HISTORY[course.id] || [
+        {
+          role: 'tutor',
+          text: isAsh
+            ? `Hi Ash! 🎀 Welcome to ${course.subject} (${SELECTED_WEEK}, ${DAY_LABELS[SELECTED_DAY]}). Ask me any question about today's reading or worksheet and we'll work through it step-by-step!`
+            : `Hey Nolan! 🦆 Ready for ${course.subject} (${SELECTED_WEEK}, ${DAY_LABELS[SELECTED_DAY]}). Let me know what part of today's reading or problem set you want to tackle!`
+        }
+      ];
+
+      container.innerHTML = `
+        <!-- 5-DAY PROGRESS BAR FOR THIS CLASS -->
+
+        <div class="day-strip">
+          ${Object.keys(DAY_LABELS).map(dKey => {
+            const dDone = course.dayStatus && course.dayStatus[dKey];
+            const isSel = dKey === SELECTED_DAY;
+            return `
+              <div class="day-pill ${isSel ? 'active' : ''} ${dDone ? 'done-day' : ''}" onclick="onDayChange('${dKey}')">
+                ${dDone ? '✓ ' : ''}${DAY_LABELS[dKey]}
+              </div>
+            `;
+
+          }).join('')}
+        </div>
+
+        <div class="student-workspace">
+          <!-- LEFT COLUMN: LARGE READING / WORKSHEET / QUIZ VIEWPORT + FULL SCREEN DOC BUTTON -->
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <h2 class="panel-title">${themeIcon} ${course.subject} — ${SELECTED_WEEK}</h2>
+                <div class="brand-sub">
+                  Source: ${course.sourceRef} • Current Grade: <strong>${course.score}</strong>
+                  ${examDiag ? ` • 🎯 Exam Diagnostic: <strong>${examDiag.masteryPct} (${examDiag.correct})</strong>` : ''}
+                </div>
+              </div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button class="btn" onclick="launchFullScreenDoc('${course.id}', '${DOC_TAB_MODE === 'quiz' ? 'Quiz' : 'Assignment'}', this)">
+                  ⛶ Open Full-Screen Editable Google Doc
+                </button>
+                <button class="btn btn-exam-toggle" onclick="toggleStudentExamHub('exam_prep')">
+                  🎯 Semester Exam Prep
+
+                </button>
+                ${course.notebookUrl ? `
+                  <a class="btn btn-secondary" href="${course.notebookUrl}" target="_blank">
+                    🧠 Open NotebookLM
+                  </a>
+                ` : ''}
+              </div>
+            </div>
+
+            <!-- TODAY'S SPECIFIC DAY BREAKDOWN BANNER -->
+            <div class="daily-focus-banner">
+              📅 <strong>${DAY_LABELS[SELECTED_DAY]} Plan:</strong> ${dayPlanText}
+            </div>
+
+            <!-- MODE SWITCH BUTTONS: READING / WORKSHEET / QUIZ -->
+            <div class="mode-tabs">
+              <button class="mode-tab ${DOC_TAB_MODE === 'reading' ? 'active' : ''}" onclick="setDocTab('reading')">
+                📖 1. Required Reading
+              </button>
+              <button class="mode-tab ${DOC_TAB_MODE === 'worksheet' ? 'active' : ''}" onclick="setDocTab('worksheet')">
+                📝 2. Daily Worksheet
+              </button>
+              <button class="mode-tab ${DOC_TAB_MODE === 'quiz' ? 'active' : ''}" onclick="setDocTab('quiz')">
+                🏆 3. Friday Quiz
+              </button>
+            </div>
+
+            <!-- LARGE SCROLLABLE CONTENT WINDOW -->
+            <div class="large-viewport">${activeContentText}</div>
+          </div>
+
+          <!-- RIGHT COLUMN: LARGE TUTOR WINDOW + TURN-IN & DAILY COMPLETION WINDOW -->
+          <div style="display:flex; flex-direction:column; gap:20px;">
+
+            <!-- LARGER SOCRATIC TUTOR WINDOW -->
+            <div class="panel">
+              <div class="panel-header">
+                <h3 class="panel-title">${tutorTitle}</h3>
+                <span class="brand-sub">Interactive Study Partner</span>
+              </div>
+
+              <div class="tutor-window" id="tutorChatBox">
+                ${chatHistory.map(item => `
+                  <div class="chat-bubble ${item.role === 'tutor' ? 'chat-tutor' : 'chat-student'}">
+                    <strong>${item.role === 'tutor' ? 'Tutor:' : course.cadet + ':'}</strong> ${item.text}
+                  </div>
+                `).join('')}
+              </div>
+
+              <div style="display:flex; gap:8px;">
+                <input type="text" id="tutorInput" style="flex:1;" placeholder="Ask a question about ${course.subject}..." onkeydown="if(event.key==='Enter') sendTutorQuestion('${course.id}')">
+                <button class="btn" id="tutorSendBtn" onclick="sendTutorQuestion('${course.id}')">Ask Tutor</button>
+              </div>
+            </div>
+
+            <!-- TURN-IN & COMPLETE CLASS FOR THE DAY WINDOW -->
+            <div class="panel">
+              <div class="panel-header">
+                <h3 class="panel-title">📬 Turn-In & Daily Class Completion</h3>
+                <span class="status-chip ${isTodayDone ? 'chip-done' : 'chip-missing'}">
+                  ${isTodayDone ? '✓ COMPLETED FOR ' + SELECTED_DAY : 'IN PROGRESS (' + SELECTED_DAY + ')'}
+                </span>
+              </div>
+
+              <div style="display:flex; flex-direction:column; gap:12px;">
+                <div>
+                  <label class="control-label">Paste Google Doc / Assignment Link to Turn In</label>
+                  <input type="url" id="turnInLink" style="width:100%; margin-top:4px;"
+                    value="${course.submittedLink || course.docUrl || ''}"
+
+                    placeholder="https://docs.google.com/document/d/...">
+                </div>
+
+                <div>
+                  <label class="control-label">Written Notes / Assignment Answers (Optional)</label>
+                  <textarea id="turnInNotes" rows="3" style="width:100%; margin-top:4px;"
+                    placeholder="Paste your answers or summary here if turning in for grading..."></textarea>
+                </div>
+
+                ${course.feedback ? `
+                  <div class="daily-focus-banner" style="margin:0;">
+                    <strong>Latest Feedback:</strong><br>${course.feedback}
+                  </div>
+                ` : ''}
+
+                <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:4px;">
+                  <button class="btn" style="flex:1; justify-content:center;" onclick="turnInStudentWork('${course.id}', this)">
+                    📤 Turn In Assignment & Grade
+                  </button>
+
+                  ${!isTodayDone ? `
+                    <button class="btn btn-success" style="flex:1; justify-content:center;" onclick="markDayCompletion('${course.id}', '${SELECTED_DAY}', true, this)">
+                      ✅ Complete Class for the Day (${SELECTED_DAY})
+                    </button>
+                  ` : `
+                    <button class="btn btn-secondary" style="flex:1; justify-content:center;" onclick="markDayCompletion('${course.id}', '${SELECTED_DAY}', false, this)">
+                      ↩ Reopen ${SELECTED_DAY}
+                    </button>
+                  `}
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      `;
+    }
+
+    function setDocTab(mode) {
+      DOC_TAB_MODE = mode;
+      renderStudentPortal();
+    }
+
+    /* =========================================================================
+       PARENT EXECUTIVE OVERVIEW (WEEKLY MATRIX, EXAM READINESS, GEMINI 3.8 FLASH, COMPLIANCE)
+       ========================================================================= */
+    function renderParentAdminOverview() {
+      const container = document.getElementById('mainContainer');
+
+      const courses = (PORTAL_DATA && PORTAL_DATA.courses) ? PORTAL_DATA.courses : [];
+      const compliance = (PORTAL_DATA && PORTAL_DATA.compliance) ? PORTAL_DATA.compliance : { mandatorySubjects: [] };
+
+      const holidays = (PORTAL_DATA && PORTAL_DATA.holidays) ? PORTAL_DATA.holidays : [];
+      const baseUrl = getBaseWebAppUrl();
+
+      const ashLink = `${baseUrl}?view=ash`;
+      const nolanLink = `${baseUrl}?view=nolan`;
+
+      const examReadiness = (PORTAL_DATA && PORTAL_DATA.examReadiness) ? PORTAL_DATA.examReadiness : { Ash: {}, Nolan: {} };
+
+      const ashExamEntries = Object.values(examReadiness.Ash || {}).map(sanitizeExamDiagnostic);
+
+      const nolanExamEntries = Object.values(examReadiness.Nolan || {}).map(sanitizeExamDiagnostic);
+
+      container.innerHTML = `
+        <!-- TOP ROW: ISOLATED STUDENT LINKS, MICHIGAN COMPLIANCE & HOLIDAY CALENDAR -->
+        <div class="admin-grid-top">
+
+          <!-- 1. ISOLATED STUDENT PORTAL & EXAM HUB LINKS -->
+          <div class="panel">
+            <div class="panel-header">
+              <h3 class="panel-title">🔐 Student Chromebook Portals & Exam Hubs</h3>
+            </div>
+            <p style="font-size:0.84rem; color:var(--text-muted); margin-top:0;">
+              Each student's portal now includes a built-in, instant-loading <strong>🎯 Semester Exam Prep</strong> view in the header:
+            </p>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <div style="padding:12px; border-radius:10px; background:#fff0f6; border:1px solid #ff9ebb;">
+                <div style="font-weight:700; color:#d61f69;">🎀 Ash's Hello Kitty Studio (9th Grade)</div>
+                <div style="font-size:0.74rem; word-break:break-all; margin:4px 0 8px 0; color:#831843;">${ashLink}</div>
+                <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                  <button class="btn" style="background:#ff3385; padding:6px 10px; font-size:0.78rem;" onclick="switchAdminPreview('ash', 'daily')">Open Ash Portal</button>
+                  <button class="btn btn-exam-toggle" style="padding:6px 10px; font-size:0.78rem;" onclick="switchAdminPreview('ash', 'exam_prep')">🎯 Ash Exam Hub</button>
+                  <a class="btn btn-secondary" style="padding:6px 10px; font-size:0.78rem;" href="${ashLink}" target="_blank">New Tab ↗</a>
+
+                </div>
+              </div>
+
+              <div style="padding:12px; border-radius:10px; background:#f2ede2; border:1px solid #8c7a5b;">
+                <div style="font-weight:700; color:#1b4d3e;">🦆 Nolan's Duck & Goose Lodge (7th Grade)</div>
+                <div style="font-size:0.74rem; word-break:break-all; margin:4px 0 8px 0; color:#1f2e27;">${nolanLink}</div>
+                <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                  <button class="btn" style="background:#1b4d3e; padding:6px 10px; font-size:0.78rem;" onclick="switchAdminPreview('nolan', 'daily')">Open Nolan Portal</button>
+                  <button class="btn btn-exam-toggle" style="padding:6px 10px; font-size:0.78rem;" onclick="switchAdminPreview('nolan', 'exam_prep')">🎯 Nolan Exam Hub</button>
+                  <a class="btn btn-secondary" style="padding:6px 10px; font-size:0.78rem;" href="${nolanLink}" target="_blank">New Tab ↗</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. MICHIGAN STATE & LOCAL LAW COMPLIANCE DISPLAY -->
+          <div class="panel">
+            <div class="panel-header">
+              <h3 class="panel-title">⚖️ Michigan & Local Legal Compliance</h3>
+              <span class="status-chip chip-done">${compliance.status || '100% COMPLIANT'}</span>
+            </div>
+            <div style="font-size:0.84rem; margin-bottom:10px;">
+              <strong>Statute:</strong> ${compliance.state || 'MCL 380.1561(3)(f)'}<br>
+              <strong>Jurisdiction:</strong> ${compliance.jurisdiction || 'Jackson County, MI'} • <strong>Progress:</strong> Week ${SELECTED_WEEK.replace('W','')} of 36
+            </div>
+            <div style="max-height:210px; overflow-y:auto; border:1px solid var(--border-col); border-radius:8px; padding:8px;">
+              ${(compliance.mandatorySubjects || []).map(item => `
+                <div style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #f1f5f9; font-size:0.8rem;">
+                  <div><strong>${item.subject}:</strong> <span style="color:var(--text-muted);">${item.metBy}</span></div>
+                  <span style="color:#166534; font-weight:700; white-space:nowrap; margin-left:8px;">✓ ${item.status}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- 3. UPCOMING HOLIDAYS & SCHOOL CALENDAR -->
+          <div class="panel">
+            <div class="panel-header">
+              <h3 class="panel-title">📅 Upcoming Holidays & Breaks (2026–2027)</h3>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px; max-height:250px; overflow-y:auto;">
+              ${holidays.map(h => `
+                <div style="padding:8px 10px; border-left:4px solid var(--accent-primary); background:#f8fafc; border-radius:6px;">
+                  <div style="font-weight:700; font-size:0.86rem; color:var(--accent-primary);">${h.name} — ${h.date}</div>
+                  <div style="font-size:0.78rem; color:var(--text-muted);">${h.note}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+
+
+        </div>
+
+        <!-- SEMESTER EXAM DIAGNOSTIC READINESS OVERVIEW PANEL -->
+        <div class="panel" style="margin-bottom:22px;">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">🎯 Semester Exam Diagnostic Readiness & Weak-Unit Tracker (Day 1 to Today)</h2>
+              <div class="brand-sub">Live diagnostic scores, unit strengths/weaknesses, and AI-proof defenses synced from Ash and Nolan's Semester Exam Prep Hubs.</div>
+
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="btn btn-exam-toggle" onclick="switchAdminPreview('ash', 'exam_prep')">🎀 Open Ash Exam Hub</button>
+              <button class="btn btn-exam-toggle" onclick="switchAdminPreview('nolan', 'exam_prep')">🦆 Open Nolan Exam Hub</button>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(420px, 1fr)); gap:16px;">
+
+            <!-- ASH EXAM DIAGNOSTICS -->
+
+
+
+
+            <div style="border:1px solid #fbcfe8; background:#fff9fb; border-radius:12px; padding:14px;">
+
+
+
+    <div style="font-weight:700; color:#be185d; margin-bottom:8px; font-size:0.95rem;">
+
+                  🎀 Ash (9th Grade) – Synced Exam Diagnostics (${ashExamEntries.length === 0 ? 'Awaiting First Diagnostic • 0/7 Logged' : ashExamEntries.length + '/7 Courses Logged'})
+                    </div>
+
+
+  ${ashExamEntries.length === 0 ? `
+      <div style="font-size:0.84rem; color:var(--text-muted); background:rgba(255,255,255,0.7); padding:10px 12px; border-radius:8px; border:1px dashed #fbcfe8; line-height:1.45;">
+            ✨ <strong>Ready for Semester Diagnostics:</strong> No exam diagnostics recorded yet. Click <strong>🎯 Ash Exam Hub</strong> above to take course diagnostics and sync mastery scores!
+
+                </div>
+
+                   ` : ashExamEntries.map(d => `
+                <div style="padding:8px 0; border-bottom:1px solid #fce7f3; font-size:0.82rem;">
+                  <div style="display:flex; justify-content:space-between; font-weight:700;">
+                    <span>${d.courseTitle || 'Course'}</span>
+                    <span style="color:#be185d;">${d.masteryPct} (${d.correct})</span>
+                  </div>
+                  <div style="color:#64748b; font-size:0.76rem; margin-top:2px;">Units: ${d.unitBreakdown || 'N/A'}</div>
+                  <div style="color:${String(d.weakUnits || '').indexOf('None') !== -1 ? '#166534' : '#b45309'}; font-size:0.76rem; font-weight:600;">
+                    Priority Review (<80%): ${d.weakUnits || 'None'}
+                  </div>
+
+                </div>
+              `).join('')}
+            <!-- NOLAN EXAM DIAGNOSTICS -->
+            <div style="border:1px solid #cbd5e1; background:#f8fafc; border-radius:12px; padding:14px;">
+
+              <div style="font-weight:700; color:#1b4d3e; margin-bottom:8px; font-size:0.95rem;">
+
+                    🦆 Nolan (7th Grade) – Synced Exam Diagnostics (${nolanExamEntries.length === 0 ? 'Awaiting First Diagnostic • 0/7 Logged' : nolanExamEntries.length + '/7 Courses Logged'})
+              </div>
+
+  ${nolanExamEntries.length === 0 ? `
+      <div style="font-size:0.84rem; color:var(--text-muted); background:rgba(255,255,255,0.7); padding:10px 12px; border-radius:8px; border:1px dashed #cbd5e1; line-height:1.45;">
+            ✨ <strong>Ready for Semester Diagnostics:</strong> No exam diagnostics recorded yet. Click <strong>🎯 Nolan Exam Hub</strong> above to take course diagnostics and sync mastery scores!
+                </div>
+
+
+                  ` : nolanExamEntries.map(d => `
+
+                <div style="padding:8px 0; border-bottom:1px solid #e2e8f0; font-size:0.82rem;">
+                  <div style="display:flex; justify-content:space-between; font-weight:700;">
+                    <span>${d.courseTitle || 'Course'}</span>
+                    <span style="color:#1b4d3e;">${d.masteryPct} (${d.correct})</span>
+                  </div>
+                  <div style="color:#64748b; font-size:0.76rem; margin-top:2px;">Units: ${d.unitBreakdown || 'N/A'}</div>
+                  <div style="color:${String(d.weakUnits || '').indexOf('None') !== -1 ? '#166534' : '#b45309'}; font-size:0.76rem; font-weight:600;">
+                    Priority Review (<80%): ${d.weakUnits || 'None'}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+
+        <!-- WEEKLY STATUS MATRIX -->
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">📋 Weekly Assignment Status Matrix (${SELECTED_WEEK} — ${DAY_LABELS[SELECTED_DAY]})</h2>
+              <div class="brand-sub">Click any M/T/W/Th/F box to toggle daily completion, click "Complete Day (No Grade)" when grading isn't needed, or run Gemini 3.8 Flash Grader.</div>
+            </div>
+          </div>
+
+          <div style="overflow-x:auto;">
+            <table class="matrix-table">
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Course & ${SELECTED_WEEK} Topic</th>
+                  <th>Gradebook & Exam Readiness</th>
+                  <th>Weekly Days (M–F)</th>
+                  <th>${SELECTED_DAY} Status</th>
+                  <th>Actions (Complete Day OR Grade with Gemini 3.8 Flash)</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${courses.map(c => {
+                  const dMap = c.dayStatus || {};
+                  const todayDone = Boolean(dMap[SELECTED_DAY]) || Boolean(c.dailyDone);
+                  const completedDaysCount = ['D1','D2','D3','D4','D5'].filter(k => dMap[k]).length;
+                  const examDiag = getCourseExamDiagnostic(c);
+                  return `
+                    <tr>
+                      <td><strong>${c.cadet}</strong></td>
+                      <td>
+                        <div style="font-weight:700;">${c.subject}</div>
+                        <div style="font-size:0.78rem; color:var(--text-muted);">${c.missionTask}</div>
+                      </td>
+                      <td>
+                        <strong>${c.score}</strong><br>
+                        <span style="font-size:0.74rem; color:var(--text-muted);">${c.pointsSummary}</span>
+                        ${examDiag ? `
+                          <div style="margin-top:4px;">
+                            <span class="status-chip chip-done" style="font-size:0.7rem;">🎯 Exam Prep: ${examDiag.masteryPct}</span>
+                          </div>
+                        ` : ''}
+                      </td>
+                      <td>
+                        ${['D1','D2','D3','D4','D5'].map((dk, idx) => {
+                          const labels = ['M','T','W','Th','F'];
+                          const done = Boolean(dMap[dk]);
+                          return `<span class="day-dot ${done ? 'is-done' : 'is-missing'}"
+                                        title="Toggle ${DAY_LABELS[dk]}"
+                                        onclick="markDayCompletion('${c.id}', '${dk}', ${!done}, this)">${labels[idx]}</span>`;
+                        }).join('')}
+                        <div style="font-size:0.72rem; color:var(--text-muted); margin-top:3px;">${completedDaysCount}/5 Days Done</div>
+                      </td>
+                      <td>
+                        <span class="status-chip ${todayDone ? 'chip-done' : 'chip-missing'}">
+                          ${todayDone ? '✓ COMPLETED' : '⚠ MISSING / PENDING'}
+                        </span>
+                      </td>
+                      <td>
+                        <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                          ${!todayDone ? `
+                            <button class="btn btn-success" style="padding:6px 10px; font-size:0.78rem;"
+                              onclick="markDayCompletion('${c.id}', '${SELECTED_DAY}', true, this)">
+                              ✓ Complete Day (No Grade)
+                            </button>
+                          ` : `
+                            <button class="btn btn-secondary" style="padding:6px 10px; font-size:0.78rem;"
+                              onclick="markDayCompletion('${c.id}', '${SELECTED_DAY}', false, this)">
+                              ↩ Undo Day
+                            </button>
+                          `}
+
+                          <button class="btn btn-amber" style="padding:6px 10px; font-size:0.78rem;"
+                            onclick="adminGradeWithGemini('${c.id}', this)">
+                            ✨ Grade w/ Gemini 3.8 Flash
+                          </button>
+
+                          <button class="btn btn-secondary" style="padding:6px 10px; font-size:0.78rem;"
+                            onclick="launchFullScreenDoc('${c.id}', 'Assignment', this)">
+                            📄 Doc
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  `;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    /* =========================================================================
+       ACTIONS: WRITE-BACK COMPLETION, FULL-SCREEN DOCS, TUTOR, GEMINI GRADER
+       ========================================================================= */
+    function markDayCompletion(courseId, dayKey, markDone, btnEl) {
+      const courses = (PORTAL_DATA && PORTAL_DATA.courses) ? PORTAL_DATA.courses : [];
+      const course = courses.find(c => c.id === courseId);
+      if (!course) return;
+
+      if (btnEl) {
+        btnEl.disabled = true;
+        if (btnEl.tagName === 'BUTTON') btnEl.innerText = 'Saving...';
+      }
+
+      google.script.run
+        .withSuccessHandler(res => {
+          if (res && res.ok) {
+            course.dailyDone = res.dailyDone;
+            course.status = res.status;
+            course.dayStatus = res.dayStatus || course.dayStatus;
+            renderApp();
+          } else {
+            alert('Write-back failed: ' + (res && res.error ? res.error : 'Unknown error'));
+            if (btnEl) btnEl.disabled = false;
+          }
+        })
+        .withFailureHandler(err => {
+          alert('Write-back error: ' + err.message);
+          if (btnEl) btnEl.disabled = false;
+        })
+        .updateMissionStatus({
+          id: course.id,
+          rowIndex: course.rowIndex,
+          cadet: course.cadet,
+          week: SELECTED_WEEK,
+          day: dayKey,
+          subject: course.subject,
+          dailyDone: markDone
+        });
+    }
+
+    function launchFullScreenDoc(courseId, docType, btnEl) {
+      const courses = (PORTAL_DATA && PORTAL_DATA.courses) ? PORTAL_DATA.courses : [];
+      const course = courses.find(c => c.id === courseId);
+      if (!course) return;
+
+      const origText = btnEl.innerText;
+      btnEl.disabled = true;
+      btnEl.innerText = 'Opening Editable Doc...';
+
+      google.script.run
+        .withSuccessHandler(res => {
+          btnEl.disabled = false;
+          btnEl.innerText = origText;
+          if (res && res.ok && res.url) {
+            if (docType === 'Quiz') course.quizUrl = res.url;
+            else course.docUrl = res.url;
+            window.open(res.url, '_blank');
+          } else {
+            alert('Could not open document: ' + (res && res.error ? res.error : 'Unknown error'));
+          }
+        })
+        .withFailureHandler(err => {
+          btnEl.disabled = false;
+          btnEl.innerText = origText;
+          alert('Document error: ' + err.message);
+        })
+        .resolveOrCreateAssignmentDoc({
+          id: course.id,
+          cadet: course.cadet,
+          subject: course.subject,
+          week: SELECTED_WEEK,
+          docType: docType,
+          missionTask: course.missionTask,
+          readingText: course.readingText,
+          existingUrl: docType === 'Quiz' ? course.quizUrl : course.docUrl
+        });
+    }
+
+    function sendTutorQuestion(courseId) {
+      const input = document.getElementById('tutorInput');
+      const question = input ? input.value.trim() : '';
+      if (!question) return;
+
+      const courses = (PORTAL_DATA && PORTAL_DATA.courses) ? PORTAL_DATA.courses : [];
+      const course = courses.find(c => c.id === courseId);
+      if (!course) return;
+
+      TUTOR_HISTORY[courseId] = TUTOR_HISTORY[courseId] || [];
+      TUTOR_HISTORY[courseId].push({ role: 'student', text: question });
+      input.value = '';
+      renderStudentPortal();
+
+      const sendBtn = document.getElementById('tutorSendBtn');
+      if (sendBtn) {
+        sendBtn.disabled = true;
+        sendBtn.innerText = 'Thinking...';
+      }
+
+      google.script.run
+        .withSuccessHandler(res => {
+          TUTOR_HISTORY[courseId].push({
+            role: 'tutor',
+            text: (res && res.reply) ? res.reply : 'Let\'s look closely at the reading passage together!'
+          });
+          renderStudentPortal();
+          const box = document.getElementById('tutorChatBox');
+          if (box) box.scrollTop = box.scrollHeight;
+        })
+        .withFailureHandler(err => {
+          TUTOR_HISTORY[courseId].push({ role: 'tutor', text: 'Tutor error: ' + err.message });
+          renderStudentPortal();
+        })
+        .askSocraticTutor({
+          cadet: course.cadet,
+          subject: course.subject,
+          missionTask: course.missionTask,
+          readingText: course.readingText,
+          question: question
+        });
+    }
+
+    function turnInStudentWork(courseId, btnEl) {
+      const courses = (PORTAL_DATA && PORTAL_DATA.courses) ? PORTAL_DATA.courses : [];
+      const course = courses.find(c => c.id === courseId);
+      if (!course) return;
+
+      const linkVal = (document.getElementById('turnInLink') || {}).value || '';
+      const notesVal = (document.getElementById('turnInNotes') || {}).value || '';
+
+      btnEl.disabled = true;
+      btnEl.innerText = 'Turning In & Grading...';
+
+      google.script.run
+        .withSuccessHandler(res => {
+          btnEl.disabled = false;
+          if (res && res.ok) {
+            course.dailyDone = true;
+            course.score = res.score || course.score;
+            course.feedback = res.feedback || '';
+            course.submittedLink = linkVal;
+            course.dayStatus = res.dayStatus || course.dayStatus;
+            renderApp();
+          } else {
+            btnEl.innerText = '📤 Turn In Assignment & Grade';
+            alert('Error turning in: ' + (res && res.error ? res.error : 'Unknown error'));
+          }
+        })
+        .withFailureHandler(err => {
+          btnEl.disabled = false;
+          btnEl.innerText = '📤 Turn In Assignment & Grade';
+          alert('Submission error: ' + err.message);
+        })
+        .submitAndGradeWithGemini({
+          id: course.id,
+          rowIndex: course.rowIndex,
+          cadet: course.cadet,
+          week: SELECTED_WEEK,
+          day: SELECTED_DAY,
+          subject: course.subject,
+          missionTask: course.missionTask,
+          submittedLink: linkVal,
+          studentResponse: notesVal,
+          docUrl: course.docUrl,
+          quizUrl: course.quizUrl
+        });
+    }
+
+    function adminGradeWithGemini(courseId, btnEl) {
+      const courses = (PORTAL_DATA && PORTAL_DATA.courses) ? PORTAL_DATA.courses : [];
+      const course = courses.find(c => c.id === courseId);
+      if (!course) return;
+
+      btnEl.disabled = true;
+      btnEl.innerText = 'Grading...';
+
+      google.script.run
+        .withSuccessHandler(res => {
+          btnEl.disabled = false;
+          if (res && res.ok) {
+            course.dailyDone = true;
+            course.score = res.score || course.score;
+            course.feedback = res.feedback || '';
+            course.dayStatus = res.dayStatus || course.dayStatus;
+            renderApp();
+            alert(`${course.cadet} — ${course.subject} (${SELECTED_WEEK}):\nScore: ${res.score}\n\n${res.feedback}`);
+          } else {
+            btnEl.innerText = '✨ Grade w/ Gemini 3.8 Flash';
+            alert('Grading error: ' + (res && res.error ? res.error : 'Unknown'));
+          }
+        })
+        .withFailureHandler(err => {
+          btnEl.disabled = false;
+          btnEl.innerText = '✨ Grade w/ Gemini 3.8 Flash';
+          alert('Error: ' + err.message);
+        })
+        .submitAndGradeWithGemini({
+          id: course.id,
+          rowIndex: course.rowIndex,
+          cadet: course.cadet,
+          week: SELECTED_WEEK,
+          day: SELECTED_DAY,
+          subject: course.subject,
+          missionTask: course.missionTask,
+          submittedLink: course.submittedLink || course.docUrl,
+          docUrl: course.docUrl,
+          quizUrl: course.quizUrl
+        });
+    }
+  </script>
+</body>
+
+</html>
