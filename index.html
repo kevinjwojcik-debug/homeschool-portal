@@ -6,7 +6,7 @@
   <title>Homeschool Portal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link
-    href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Inter:wght@400;500;600;700&amp;family=Zilla&#43;Slab:wght@600;700&amp;display=swap"
+    href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Zilla+Slab:wght@600;700&display=swap"
     rel="stylesheet">
   <style>
     * {
@@ -19,7 +19,9 @@
       transition: background 0.25s, color 0.25s;
     }
 
-     
+    /* =========================================================================
+       THEME 1: ASH'S HELLO KITTY STUDIO (PASTEL PINK, BOWS, STRAWBERRY CREAM)
+       ========================================================================= */
     body.theme-ash {
       --bg-main: #fff0f6;
       --bg-pattern: radial-gradient(#ffc2d9 1.5px, transparent 1.5px);
@@ -40,7 +42,9 @@
       color: var(--text-primary);
     }
 
-     
+    /* =========================================================================
+       THEME 2: NOLAN'S DUCK & GOOSE MARSH LODGE (MALLARD GREEN, CEDAR, BRASS)
+       ========================================================================= */
     body.theme-nolan {
       --bg-main: #f2ede2;
       --bg-pattern: radial-gradient(#d5ccb6 1.5px, transparent 1.5px);
@@ -61,7 +65,9 @@
       color: var(--text-primary);
     }
 
-     
+    /* =========================================================================
+       THEME 3: PARENT EXECUTIVE OVERVIEW (CLEAN SLATE & INDIGO COMMAND)
+       ========================================================================= */
     body.theme-admin {
       --bg-main: #f1f5f9;
       --panel-bg: #ffffff;
@@ -81,7 +87,7 @@
 
     }
 
-     
+    /* HEADER BAR */
     .portal-header {
 
       background: var(--panel-bg);
@@ -117,7 +123,7 @@
       font-weight: 500;
     }
 
-     
+    /* DROPDOWNS & CONTROLS */
     .selector-bar {
       display: flex;
       flex-wrap: wrap;
@@ -220,7 +226,7 @@
       padding: 20px;
     }
 
-     
+    /* STUDENT WORKSPACE LAYOUT */
     .student-workspace {
       display: grid;
       grid-template-columns: 1.55fr 1fr;
@@ -261,7 +267,7 @@
       margin: 0;
     }
 
-     
+    /* DAY PILLS BAR */
     .day-strip {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -297,7 +303,7 @@
       box-shadow: 0 0 0 3px var(--accent-primary);
     }
 
-     
+    /* MODE SWITCH TABS */
     .mode-tabs {
       display: flex;
       flex-wrap: wrap;
@@ -322,7 +328,7 @@
       border-color: var(--accent-primary);
     }
 
-     
+    /* LARGE READING / WORKSHEET / QUIZ VIEWPORT */
     .large-viewport {
       background: var(--card-bg);
       border: 2px solid var(--border-col);
@@ -345,7 +351,7 @@
       font-weight: 600;
     }
 
-     
+    /* LARGE SOCRATIC TUTOR WINDOW */
     .tutor-window {
       background: var(--card-bg);
       border: 2px solid var(--border-col);
@@ -379,7 +385,7 @@
       align-self: flex-end;
     }
 
-     
+    /* PARENT ADMIN TABLES & CARDS */
     .admin-grid-top {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -457,7 +463,7 @@
       color: #64748b;
     }
 
-     
+    /* NATIVE SEMESTER EXAM HUB STYLES */
     .exam-course-pills {
       display: flex;
       flex-wrap: wrap;
@@ -558,10 +564,10 @@
 
 <body class="theme-admin" id="appBody">
 
-  
+  <!-- TOP NAVIGATION & DROPDOWN BAR -->
   <header class="portal-header" id="headerBar"></header>
 
-  
+  <!-- MAIN CONTENT WORKSPACE -->
   <div class="container" id="mainContainer">
     <div class="panel" style="text-align:center; padding:45px;">
       Loading Homeschool Environment...
@@ -575,9 +581,9 @@
 
 
   <script>
-    
-  
-  
+    // =========================================================================
+  // STANDALONE GITHUB PAGES / WEB HOSTING FETCH POLYFILL FOR GOOGLE APPS SCRIPT
+  // =========================================================================
   const GAS_EXEC_URL =
   'https://script.google.com/macros/s/AKfycbzZCfCca0B87v6KaDPwny9NcVHc4d1HNia26tP_Y8cQwNRJXX6dsKaNhu7Bxt_8oLXU/exec';
 
@@ -626,35 +632,40 @@
 
 
 
-    
-      const _urlParams = new URLSearchParams(window.location.search);
-        const _rawLockedRole = 'admin';
-          const LOCKED_ROLE = (!_rawLockedRole || _rawLockedRole.indexOf('<' + '?') !== -1 || _rawLockedRole === 'undefined')
-              ? (_urlParams.get('view') || _urlParams.get('student') || 'admin')
-                  : _rawLockedRole;
-                    let CURRENT_VIEW = LOCKED_ROLE;
-
-                      const _rawWeek = 'W9';
-                        let rawWeekVal = (!_rawWeek || _rawWeek.indexOf('<' + '?') !== -1 || _rawWeek === 'undefined')
-                            ? (_urlParams.get('week') || 'W9')
-                                : _rawWeek;
-                                  let SELECTED_WEEK = String(rawWeekVal).startsWith('W') ? String(rawWeekVal) : ('W' + rawWeekVal);
-
-                                    const _rawDay = 'D4';
-
-
-                                      let rawDayVal = (!_rawDay || _rawDay.indexOf('<' + '?') !== -1 || _rawDay === 'undefined')
-                                          ? (_urlParams.get('day') || 'D4')
-                                              : _rawDay;
-                                                let SELECTED_DAY = String(rawDayVal).startsWith('D') ? String(rawDayVal) : ('D' + rawDayVal);
-
-                                          
-                                                                                                                                                                                                                                                                                                                                         let SELECTED_COURSE_ID = "";
-    let DOC_TAB_MODE = "reading"; 
 
 
 
-    let STUDENT_SUBVIEW = "daily"; 
+
+    const _urlParams = new URLSearchParams(window.location.search);
+
+
+
+
+        let _parsedView = (_urlParams.get('view') || _urlParams.get('student') || _urlParams.get('role') || '').toLowerCase();
+            let _parsedTab = (_urlParams.get('tab') || _urlParams.get('subview') || '').toLowerCase();
+                if (_parsedView === 'ash_exam_prep') { _parsedView = 'ash'; _parsedTab = 'exam_prep'; }
+
+
+                    if (_parsedView === 'nolan_exam_prep') { _parsedView = 'nolan'; _parsedTab = 'exam_prep'; }
+
+
+
+
+
+
+let LOCKED_ROLE = '<?= lockedRole ?>';
+if (!LOCKED_ROLE || LOCKED_ROLE.indexOf('<' + '?=') !== -1 || LOCKED_ROLE === 'undefined') { LOCKED_ROLE = (_parsedView === 'ash' || _parsedView === 'nolan' || _parsedView === 'admin') ? _parsedView : 'admin'; }
+let CURRENT_VIEW = LOCKED_ROLE;
+let rawWeekVal = '<?= initialWeek ?>';
+if (!rawWeekVal || rawWeekVal.indexOf('<' + '?=') !== -1 || rawWeekVal === 'undefined') { rawWeekVal = _urlParams.get('week') || '9'; }
+let SELECTED_WEEK = String(rawWeekVal).startsWith('W') ? String(rawWeekVal) : ('W' + rawWeekVal);
+let rawDayVal = '<?= initialDay ?>';
+if (!rawDayVal || rawDayVal.indexOf('<' + '?=') !== -1 || rawDayVal === 'undefined') { rawDayVal = _urlParams.get('day') || 'D4'; }
+let SELECTED_DAY = String(rawDayVal).startsWith('D') ? String(rawDayVal) : ('D' + rawDayVal);
+        let SELECTED_COURSE_ID = "";
+                                                let DOC_TAB_MODE = "reading"; // 'reading', 'worksheet', 'quiz'
+
+let STUDENT_SUBVIEW = (_parsedTab === 'exam_prep') ? 'exam_prep' : 'daily';
     let PORTAL_DATA = null;
 
 let CACHED_RAW_INDEX_HTML = "";
@@ -677,15 +688,18 @@ if (typeof google !== 'undefined' && google.script && google.script.run) {
       D5: 'Friday (Day 5 — Quiz)'
     };
 
-    
-
+    /* =========================================================================
+       NATIVE CUMULATIVE SEMESTER EXAM PREP & DIAGNOSTIC BANK (ALL 14 COURSES)
+       Covers Day 1 to Today with Unit-Tagged Questions & NotebookLM Prompts
+       ========================================================================= */
     const EXAM_BANK = {
-      
+      // ==================== ASH (9TH GRADE — 7 COURSES) ====================
       'A_ALG1': {
         scope: 'Weeks 1–10 (Ch. 0 Foundations, Ch. 1 Linear/Absolute Value, Systems of Equations)',
         prompt: 'Act as my Algebra 1 Semester Exam Tutor. Quiz me interactively across Unit 1 (Integers, Order of Operations & Properties), Unit 2 (Multi-Step, Fractional, Literal & Absolute Value Equations), and Unit 3 (Systems of Linear Equations by Substitution & Special Cases). Ask 1 problem at a time, check my algebraic steps, and output a Strengths & Weaknesses Diagnostic Report.',
         units: [
           { name: 'Unit 1: Foundations & Properties (W1–W3)', items: ['Signed integer operations & exponents: (-3)^2 = 9 vs. -3^2 = -9', 'Order of Operations (PEMDAS) & Distributive Property: a(b + c) = ab + ac', 'Combining like terms & evaluating multi-variable algebraic expressions'] },
+
           { name: 'Unit 2: Linear, Fractional & Absolute Value Equations (W4–W8)', items: ['Clearing fractions first by multiplying EVERY term on both sides by the LCD', 'Literal equations (isolating a target variable, e.g., solving A = 1/2 bh for b)', 'Absolute Value Equations: Isolate |ax + b| = c first, then split into +c and -c cases'] },
           { name: 'Unit 3: Systems of Equations & Modeling (W9–W10)', items: ['Substitution Method: Isolate one variable, substitute into the other equation, back-substitute', 'Special Cases: Independent (1 solution), Dependent (identity like -4 = -4, infinite solutions), Inconsistent (false statement like 0 = 4, parallel lines, no solution)', 'Break-even & mixture word problems (Revenue = Cost)'] }
         ],
@@ -793,6 +807,7 @@ if (typeof google !== 'undefined' && google.script && google.script.run) {
         scope: 'Weeks 1–4 (Providential Stewardship, Natural Cleaners, Acid-Base Body Care Chemistry & Canning Safety)',
         prompt: 'Act as my Homesteading Exam Coach. Quiz me across Unit 1 (Providential Planning & FIFO Pantry Audits), Unit 2 (Acid-Base Chemistry of Natural Cleaners & Scalp pH 4.5–5.5), and Unit 3 (Herbal Salve Formulations & Water Bath vs. Pressure Canning Safety). Ask 1 question at a time and generate a Strengths & Weaknesses Report.',
         units: [
+
           { name: 'Unit 1: Providential Planning & Pantry Stewardship (W1)', items: ['The Firewood & Pectin Principle: Seasoning wood and stocking canning supplies seasons before harvest', 'FIFO (First-In, First-Out) Pantry Audit: Planning garden & canning quotas around real family consumption'] },
           { name: 'Unit 2: Non-Toxic Acid-Base Chemistry & Body Care (W2–W4)', items: ['Human hair/scalp natural acidic pH (4.5–5.5): Diluted Apple Cider Vinegar (acetic acid) flattens cuticle scales after alkaline soap', 'Baking Soda (sodium bicarbonate): Mild alkali base that neutralizes acidic odor molecules into odorless salts', 'Cold-pressed therapeutic essential oils (lavender, rosemary, tea tree) vs. synthetic petroleum fragrance oils'] },
           { name: 'Unit 3: Herbal Infusions & Canning Food Safety (W3–W4)', items: ['Lab 1 Herbal ACV Hair Rinse (chamomile, sage, rosemary, thyme) & Lab 2 Beeswax/Olive Oil Healing Salve', 'Water Bath Canning (212°F for high-acid fruits/jams/pickles) vs. Pressure Canning (240°F+ mandatory for low-acid meats/beans/broth to destroy Clostridium botulinum spores)'] }
@@ -808,7 +823,7 @@ if (typeof google !== 'undefined' && google.script && google.script.run) {
         ]
       },
 
-      
+      // ==================== NOLAN (7TH GRADE — 7 COURSES) ====================
       'N_BIBLE': {
         scope: 'Weeks 1–10 (Nehemiah, Job, Daniel 2, Daniel 10 Spiritual Warfare & Jonah)',
         prompt: 'Act as my 7th Grade Bible Exam Coach. Quiz me interactively across Nehemiah (52-day wall & Ezra reading the Law), Job (suffering, false comforters & God\'s whirlwind answer), Daniel 2 (Nebuchadnezzar\'s statue), and Daniel 10 (21-day spiritual warfare & Michael). Ask 1 question at a time and generate a Strengths & Weaknesses Report.',
@@ -822,6 +837,7 @@ if (typeof google !== 'undefined' && google.script && google.script.run) {
           { unit: 'Unit 1', q: 'What official position did Nehemiah hold in the Persian palace of King Artaxerxes, and how many days did it take to rebuild Jerusalem\'s wall?', opts: ['General of the Army; 120 days', 'Cupbearer to the King; 52 days', 'High Priest; 40 days', 'Governor of Babylon; 7 years'], ans: 1, exp: 'Nehemiah was King Artaxerxes\' trusted cupbearer (Neh. 1:11), and the wall was completed in just 52 days (Neh. 6:15).' },
           { unit: 'Unit 1', q: 'How did Nehemiah\'s workers respond when Sanballat and Tobiah threatened to attack Jerusalem during the rebuilding?', opts: ['They abandoned the wall and hid', 'They worked with a building tool in one hand and a weapon in the other while trusting God to fight for them', 'They paid Sanballat gold', 'They waited 10 years'], ans: 1, exp: 'In Nehemiah 4:17–20, the builders combined practical vigilance (tools and weapons) with faith ("Our God will fight for us!").' },
           { unit: 'Unit 2', q: 'What false theological claim did Job\'s three friends repeatedly make, and how did God answer Job in chapters 38–41?', opts: ['They claimed Job\'s suffering proved he had committed secret sin; God spoke from the whirlwind pointing to His sovereign power over creation', 'They told Job to curse God; God sent an angel with gold', 'They said suffering doesn\'t exist', 'They blamed the Babylonians'], ans: 0, exp: 'Job\'s friends wrongly assumed suffering is always retribution for personal sin, whereas God revealed His transcendent wisdom from the whirlwind.' },
+
           { unit: 'Unit 3', q: 'In Nebuchadnezzar\'s dream in Daniel 2, what did the uncut stone that struck the statue\'s feet of iron and clay represent?', opts: ['The city of Nineveh', 'God\'s eternal Kingdom that will never be destroyed', 'Alexander the Great\'s army', 'The Tower of Babel'], ans: 1, exp: 'Daniel 2:44 explains that the stone cut without human hands represents God\'s everlasting Kingdom that outlasts every earthly empire.' },
           { unit: 'Unit 3', q: 'In Daniel 10:12–13, when did God hear Daniel\'s prayer, and why did it take 21 days for the heavenly messenger to arrive?', opts: ['God heard on Day 21 because Daniel forgot to fast', 'God heard on the very first day Daniel humbled himself, but the spiritual "prince of the Persian kingdom" resisted the messenger for 21 days until Michael came to help', 'The messenger got lost in Egypt', 'King Artaxerxes blocked the road'], ans: 1, exp: 'Daniel\'s prayer was heard on Day 1 (v. 12), revealing that unseen spiritual warfare was taking place behind earthly kingdoms until the archangel Michael intervened (v. 13).' },
           { unit: 'Unit 3', q: 'Where did God command Jonah to preach, and toward which city did Jonah board a ship to flee?', opts: ['Called to Babylon; fled to Rome', 'Called to Nineveh; fled toward Tarshish', 'Called to Susa; fled to Jericho', 'Called to Memphis; fled to Crete'], ans: 1, exp: 'Jonah 1:1–3 records that God called Jonah to preach to wicked Nineveh, but he boarded a ship heading the opposite direction toward Tarshish.' }
@@ -981,11 +997,14 @@ if (typeof google !== 'undefined' && google.script && google.script.run) {
                 return window.location.origin + window.location.pathname;
                     }
                         if (PORTAL_DATA && PORTAL_DATA.webAppUrl) return PORTAL_DATA.webAppUrl;
+
                             return window.location.href.split('?')[0];
 
                                   }
 
     function fetchPortalData() {
+
+1005
       google.script.run
         .withSuccessHandler(res => {
           PORTAL_DATA = res;
@@ -1004,8 +1023,9 @@ if (typeof google !== 'undefined' && google.script && google.script.run) {
       if (!PORTAL_DATA || !PORTAL_DATA.courses) return;
       const studentName = CURRENT_VIEW === 'ash' ? 'Ash' : (CURRENT_VIEW === 'nolan' ? 'Nolan' : '');
       const list = studentName
-        ? PORTAL_DATA.courses.filter(c => c.cadet.toLowerCase() === studentName.toLowerCase())
+        ? PORTAL_DATA.courses.filter(c => (c.cadet && c.cadet.toLowerCase() === studentName.toLowerCase()) || (studentName === 'Ash' ? String(c.id || '').startsWith('A_') : String(c.id || '').startsWith('N_')))
         : PORTAL_DATA.courses;
+
 
 
       if (list.length && (!SELECTED_COURSE_ID || !list.some(c => c.id === SELECTED_COURSE_ID))) {
@@ -1030,6 +1050,7 @@ if (typeof google !== 'undefined' && google.script && google.script.run) {
       SELECTED_COURSE_ID = newCourseId;
       renderApp();
     }
+
 
 
     function toggleStudentExamHub(forceMode) {
@@ -1086,6 +1107,7 @@ if (typeof google !== 'undefined' && google.script && google.script.run) {
                                                                                                 }
                                                                                                     }
 
+
                                                                                                       }
                                                                                                       
                                                                                                         return Object.assign({}, diag, { correct: correct, masteryPct: mastery });
@@ -1124,6 +1146,9 @@ if (typeof google !== 'undefined' && google.script && google.script.run) {
 
 
 
+
+
+
 function renderApp() {
     renderHeader();
       try {
@@ -1141,13 +1166,17 @@ function renderApp() {
                                                       renderNativeStudentExamHub();
                                                           } else {
 
+
                                                                 renderStudentPortal();
                                                                     }
                                                                       } else {
                                                                           renderParentAdminOverview();
+
                                                                             }
 
                                                                                                  }
+
+
 
 
     function renderHeader() {
@@ -1156,9 +1185,9 @@ function renderApp() {
       const weeks = ['W1','W2','W3','W4','W5','W6','W7','W8','W9','W10','W11','W12'];
 
       if (CURRENT_VIEW === 'ash' || CURRENT_VIEW === 'nolan') {
-        const isAsh = CURRENT_VIEW === 'ash';
-        const studentName = isAsh ? 'Ash' : 'Nolan';
-        const myCourses = courses.filter(c => c.cadet === studentName);
+
+            const isAsh = CURRENT_VIEW === 'ash';
+            const myCourses = courses.filter(c => isAsh ? (String(c.cadet || '').toLowerCase() === 'ash' || String(c.id || '').startsWith('A_')) : (String(c.cadet || '').toLowerCase() === 'nolan' || String(c.id || '').startsWith('N_')));
 
         const titleHtml = isAsh
           ? `<span>🎀🍓 Ash's Hello Kitty Study Cafe</span>`
@@ -1181,17 +1210,21 @@ function renderApp() {
               ${isExamMode ? '📚 Return to Daily Class Workspace' : '🎯 Semester Exam Prep (Day 1–Today)'}
             </button>
 
+
+1215
             <div class="control-group">
               <span class="control-label">Select Class (7 Courses)</span>
               <select onchange="onCourseChange(this.value)">
                 ${myCourses.map(c => {
                   const doneToday = c.dayStatus && c.dayStatus[SELECTED_DAY];
                   return `<option value="${c.id}" ${c.id === SELECTED_COURSE_ID ? 'selected' : ''}>
-                    ${doneToday ? '✓ ' : ''}${c.subject} (${c.score})
+
+                    ${doneToday ? '✓ ' : ''}${c.subject}${c.score ? ' (' + c.score + ')' : ''}
                   </option>`;
                 }).join('')}
               </select>
             </div>
+
 
             <div class="control-group">
               <span class="control-label">Select Week</span>
@@ -1215,6 +1248,8 @@ function renderApp() {
             ` : ''}
           </div>
         `;
+
+1240
       } else {
         header.innerHTML = `
           <div>
@@ -1253,7 +1288,12 @@ function renderApp() {
           </div>
         `;
       }
+
+
     }
+
+
+
 
 
 
@@ -1276,6 +1316,7 @@ function downloadStandaloneIndex() {
 
                             const blob = new Blob([clean], { type: 'text/html;charset=utf-8' });
                               const url = URL.createObjectURL(blob);
+
                                 const a = document.createElement('a');
                                   a.style.display = 'none';
                                     a.href = url;
@@ -1291,8 +1332,12 @@ function downloadStandaloneIndex() {
 
 
 
-    
+    /* =========================================================================
 
+       NATIVE SEMESTER EXAM PREP & DIAGNOSTIC HUB (INSTANT, ZERO IFRAME)
+
+
+       ========================================================================= */
     function computeExamMetrics(courseId) {
       const bank = EXAM_BANK[courseId];
       const st = getCourseExamState(courseId);
@@ -1332,7 +1377,7 @@ function downloadStandaloneIndex() {
       const container = document.getElementById('mainContainer');
       const isAsh = CURRENT_VIEW === 'ash';
       const studentName = isAsh ? 'Ash' : 'Nolan';
-      const courses = ((PORTAL_DATA && PORTAL_DATA.courses) ? PORTAL_DATA.courses : []).filter(c => c.cadet === studentName);
+      const courses = ((PORTAL_DATA && PORTAL_DATA.courses) ? PORTAL_DATA.courses : []).filter(c => isAsh ? (String(c.cadet || '').toLowerCase() === 'ash' || String(c.id || '').startsWith('A_')) : (String(c.cadet || '').toLowerCase() === 'nolan' || String(c.id || '').startsWith('N_')));
       const course = courses.find(c => c.id === SELECTED_COURSE_ID) || courses[0];
       if (!course) {
         container.innerHTML = `<div class="panel">No courses found.</div>`;
@@ -1641,6 +1686,7 @@ function downloadStandaloneIndex() {
           btnEl.disabled = false;
           btnEl.innerText = origText;
           alert('Sync error: ' + err.message);
+
         })
         .saveExamDiagnostic(payload);
     }
@@ -1650,38 +1696,47 @@ function downloadStandaloneIndex() {
        ========================================================================= */
     function renderStudentPortal() {
       const container = document.getElementById('mainContainer');
+
       const courses = (PORTAL_DATA && PORTAL_DATA.courses) ? PORTAL_DATA.courses : [];
-      const course = courses.find(c => c.id === SELECTED_COURSE_ID) || courses[0];
+
+      const isAshPortal = CURRENT_VIEW === 'ash'; const isNolanPortal = CURRENT_VIEW === 'nolan'; const cadetCourses = (isAshPortal || isNolanPortal) ? courses.filter(c => isAshPortal ? (String(c.cadet || '').toLowerCase() === 'ash' || String(c.id || '').startsWith('A_')) : (String(c.cadet || '').toLowerCase() === 'nolan' || String(c.id || '').startsWith('N_'))) : courses; let course = cadetCourses.find(c => c.id === SELECTED_COURSE_ID); if (!course && cadetCourses.length > 0) { course = cadetCourses[0]; SELECTED_COURSE_ID = course.id; }
       if (!course) {
         container.innerHTML = `<div class="panel">No courses found.</div>`;
         return;
       }
 
-      const isAsh = CURRENT_VIEW === 'ash';
-      const themeIcon = isAsh ? '🎀' : '🦆';
-      const tutorTitle = isAsh ? '🐱 Hello Kitty Socratic Study Helper' : '🦆 Timber Lodge Socratic Field Guide';
 
-      const dayPlanText = (course.dailyPlan && course.dailyPlan[SELECTED_DAY]) || course.missionTask;
+    const isAsh = CURRENT_VIEW === 'ash';
+      const themeIcon = isAsh ? '🎀' : '🪵';
+          const tutorTitle = isAsh ? '🐱 Hello Kitty Socratic Study Heclper' : '🦆 Timber Lodge Socratic Field Guide';
+
+
+      const rawPlan = (course.dailyPlan && course.dailyPlan[SELECTED_DAY]) || course.missionTask; const dayPlanText = (rawPlan && typeof rawPlan === 'object') ? (rawPlan.task || rawPlan.plan || rawPlan.title || rawPlan.summary || '') : (rawPlan || '');
       const isTodayDone = Boolean(course.dayStatus && course.dayStatus[SELECTED_DAY]) || Boolean(course.dailyDone);
+
+
       const examDiag = getCourseExamDiagnostic(course);
 
-      let activeContentText = course.readingText || '';
-      if (DOC_TAB_MODE === 'worksheet') activeContentText = course.worksheetText || course.readingText;
-      if (DOC_TAB_MODE === 'quiz') activeContentText = course.quizText || 'Friday Mastery Quiz questions open in Google Docs.';
 
-      const chatHistory = TUTOR_HISTORY[course.id] || [
+
+const _dayNamesMap = { D1: 'Monday (Day 1)', D2: 'Tuesday (Day 2)', D3: 'Wednesday (Day 3)', D4: 'Thursday (Day 4)', D5: 'Friday (Day 5)' }; const _schedDays = Array.isArray(course.scheduledDays) ? course.scheduledDays : ['D1','D2','D3','D4','D5']; const _isSchedDay = _schedDays.indexOf(SELECTED_DAY) !== -1; const _dayRead = (course.dailyReading && course.dailyReading[SELECTED_DAY]) ? course.dailyReading[SELECTED_DAY] : (course.readingText || course.missionTask || 'Reading materials for this day are being prepared.'); const _dayWork = (course.dailyWorksheet && course.dailyWorksheet[SELECTED_DAY]) ? course.dailyWorksheet[SELECTED_DAY] : (course.worksheetText || _dayRead); let activeContentText = _dayRead; if (DOC_TAB_MODE === 'worksheet') activeContentText = _dayWork; if (DOC_TAB_MODE === 'quiz') activeContentText = course.quizText || 'Friday Mastery Quiz questions open in Google Docs.'; const _dayDocUrl = (course.dailyDocUrls && course.dailyDocUrls[SELECTED_DAY]) ? course.dailyDocUrls[SELECTED_DAY] : (_isSchedDay ? (course.docUrl || '') : ''); const _quizDocUrl = course.quizUrl || ''; course.submittedLink = (DOC_TAB_MODE === 'quiz' || (SELECTED_DAY === 'D5' && !_isSchedDay)) ? (_quizDocUrl || _dayDocUrl) : (_dayDocUrl || _quizDocUrl); window.openCourseDoc = function(courseId, forceType) { const c = (PORTAL_DATA && Array.isArray(PORTAL_DATA.courses)) ? PORTAL_DATA.courses.find(x => x.id === courseId) : course; if (!c) return; const isQuiz = (forceType === 'Quiz') || (DOC_TAB_MODE === 'quiz'); const sDays = Array.isArray(c.scheduledDays) ? c.scheduledDays : ['D1','D2','D3','D4','D5']; if (!isQuiz && sDays.indexOf(SELECTED_DAY) === -1) { alert(c.subject + ' is scheduled ' + (c.daysPerWeek || sDays.length) + ' days/week (' + sDays.join(', ') + '). There is no daily worksheet scheduled on ' + (_dayNamesMap[SELECTED_DAY] || SELECTED_DAY) + '. Use the "🏆 Open Friday Quiz Google Doc" button to open the weekly quiz!'); return; } const directUrl = isQuiz ? (c.quizUrl || '') : ((c.dailyDocUrls && c.dailyDocUrls[SELECTED_DAY]) ? c.dailyDocUrls[SELECTED_DAY] : ''); const linkBox = document.getElementById('submission-link-input'); if (directUrl && directUrl.indexOf('docs.google.com/') !== -1) { if (linkBox) linkBox.value = directUrl; window.open(directUrl, '_blank'); return; } const win = window.open('about:blank', '_blank'); google.script.run.withSuccessHandler(function(res) { if (res && res.ok && res.url) { if (isQuiz) { c.quizUrl = res.url; } else { if (!c.dailyDocUrls) c.dailyDocUrls = {}; c.dailyDocUrls[SELECTED_DAY] = res.url; } if (linkBox) linkBox.value = res.url; if (win) win.location.href = res.url; else window.open(res.url, '_blank'); } else { if (win) win.close(); alert((res && res.error) ? res.error : 'Could not open Google Doc for this day.'); } }).resolveOrCreateAssignmentDoc({ id: c.id, cadet: c.cadet, subject: c.subject, week: SELECTED_WEEK, day: SELECTED_DAY, docType: isQuiz ? 'Quiz' : 'Assignment' }); }; setTimeout(function() { try { const btns = Array.from(document.querySelectorAll('button')); const docBtn = btns.find(b => /Open Full-Screen Editable Google Doc|Open .* Google Doc/i.test(b.textContent || '')); if (docBtn) { if (DOC_TAB_MODE === 'quiz') { docBtn.innerHTML = '🏆 Open Friday Quiz Google Doc'; docBtn.onclick = function() { window.openCourseDoc(course.id, 'Quiz'); }; } else if (!_isSchedDay) { docBtn.innerHTML = '🌿 Off Day (' + (_schedDays.length) + ' Days/Wk Schedule)'; docBtn.style.opacity = '0.65'; } else { docBtn.innerHTML = '📝 Open ' + (_dayNamesMap[SELECTED_DAY] || SELECTED_DAY) + ' Google Doc'; docBtn.style.opacity = '1'; docBtn.onclick = function() { window.openCourseDoc(course.id, 'Assignment'); }; } if (!document.getElementById('dedicated-friday-quiz-doc-btn')) { const qBtn = document.createElement('button'); qBtn.id = 'dedicated-friday-quiz-doc-btn'; qBtn.className = docBtn.className; qBtn.style.cssText = 'background:#b45309;color:#fff;border:none;cursor:pointer;'; qBtn.innerHTML = '🏆 Open Friday Quiz Google Doc'; qBtn.onclick = function() { DOC_TAB_MODE = 'quiz'; renderStudentPortal(); window.openCourseDoc(course.id, 'Quiz'); }; docBtn.parentNode.insertBefore(qBtn, docBtn.nextSibling); } } const dayMapShort = { 'Monday (Day 1)': 'D1', 'Tuesday (Day 2)': 'D2', 'Wednesday (Day 3)': 'D3', 'Thursday (Day 4)': 'D4', 'Friday (Day 5 — Quiz)': 'D5' }; btns.forEach(b => { const txt = (b.textContent || '').trim(); Object.keys(dayMapShort).forEach(label => { if (txt.indexOf(label.split(' ')[0]) === 0 && txt.indexOf('Day ') !== -1) { const dKey = dayMapShort[label]; if (dKey && _schedDays.indexOf(dKey) === -1) { if (txt.indexOf('Off') === -1) b.textContent = label.split(' (')[0] + ' (' + dKey + ' — Off)'; b.style.opacity = (SELECTED_DAY === dKey) ? '0.9' : '0.5'; } } }); }); } catch (e) {} }, 0);
+const chatHistory = TUTOR_HISTORY[course.id] || [
         {
           role: 'tutor',
           text: isAsh
+
             ? `Hi Ash! 🎀 Welcome to ${course.subject} (${SELECTED_WEEK}, ${DAY_LABELS[SELECTED_DAY]}). Ask me any question about today's reading or worksheet and we'll work through it step-by-step!`
             : `Hey Nolan! 🦆 Ready for ${course.subject} (${SELECTED_WEEK}, ${DAY_LABELS[SELECTED_DAY]}). Let me know what part of today's reading or problem set you want to tackle!`
         }
       ];
 
+
       container.innerHTML = `
+
         <!-- 5-DAY PROGRESS BAR FOR THIS CLASS -->
 
         <div class="day-strip">
+
           ${Object.keys(DAY_LABELS).map(dKey => {
             const dDone = course.dayStatus && course.dayStatus[dKey];
             const isSel = dKey === SELECTED_DAY;
@@ -1692,19 +1747,25 @@ function downloadStandaloneIndex() {
             `;
 
           }).join('')}
+
         </div>
 
         <div class="student-workspace">
           <!-- LEFT COLUMN: LARGE READING / WORKSHEET / QUIZ VIEWPORT + FULL SCREEN DOC BUTTON -->
+
           <div class="panel">
+
             <div class="panel-header">
               <div>
                 <h2 class="panel-title">${themeIcon} ${course.subject} — ${SELECTED_WEEK}</h2>
                 <div class="brand-sub">
                   Source: ${course.sourceRef} • Current Grade: <strong>${course.score}</strong>
+
                   ${examDiag ? ` • 🎯 Exam Diagnostic: <strong>${examDiag.masteryPct} (${examDiag.correct})</strong>` : ''}
                 </div>
               </div>
+
+
               <div style="display:flex; gap:8px; flex-wrap:wrap;">
                 <button class="btn" onclick="launchFullScreenDoc('${course.id}', '${DOC_TAB_MODE === 'quiz' ? 'Quiz' : 'Assignment'}', this)">
                   ⛶ Open Full-Screen Editable Google Doc
@@ -1712,46 +1773,58 @@ function downloadStandaloneIndex() {
                 <button class="btn btn-exam-toggle" onclick="toggleStudentExamHub('exam_prep')">
                   🎯 Semester Exam Prep
 
+
                 </button>
                 ${course.notebookUrl ? `
                   <a class="btn btn-secondary" href="${course.notebookUrl}" target="_blank">
                     🧠 Open NotebookLM
                   </a>
+
                 ` : ''}
               </div>
             </div>
 
             <!-- TODAY'S SPECIFIC DAY BREAKDOWN BANNER -->
+
             <div class="daily-focus-banner">
               📅 <strong>${DAY_LABELS[SELECTED_DAY]} Plan:</strong> ${dayPlanText}
             </div>
 
             <!-- MODE SWITCH BUTTONS: READING / WORKSHEET / QUIZ -->
             <div class="mode-tabs">
+
               <button class="mode-tab ${DOC_TAB_MODE === 'reading' ? 'active' : ''}" onclick="setDocTab('reading')">
                 📖 1. Required Reading
+
               </button>
+
               <button class="mode-tab ${DOC_TAB_MODE === 'worksheet' ? 'active' : ''}" onclick="setDocTab('worksheet')">
                 📝 2. Daily Worksheet
+
               </button>
               <button class="mode-tab ${DOC_TAB_MODE === 'quiz' ? 'active' : ''}" onclick="setDocTab('quiz')">
                 🏆 3. Friday Quiz
               </button>
+
             </div>
+
 
             <!-- LARGE SCROLLABLE CONTENT WINDOW -->
             <div class="large-viewport">${activeContentText}</div>
           </div>
+
 
           <!-- RIGHT COLUMN: LARGE TUTOR WINDOW + TURN-IN & DAILY COMPLETION WINDOW -->
           <div style="display:flex; flex-direction:column; gap:20px;">
 
             <!-- LARGER SOCRATIC TUTOR WINDOW -->
             <div class="panel">
+
               <div class="panel-header">
                 <h3 class="panel-title">${tutorTitle}</h3>
                 <span class="brand-sub">Interactive Study Partner</span>
               </div>
+
 
               <div class="tutor-window" id="tutorChatBox">
                 ${chatHistory.map(item => `
@@ -1837,6 +1910,7 @@ function downloadStandaloneIndex() {
 
       const holidays = (PORTAL_DATA && PORTAL_DATA.holidays) ? PORTAL_DATA.holidays : [];
       const baseUrl = getBaseWebAppUrl();
+
 
       const ashLink = `${baseUrl}?view=ash`;
       const nolanLink = `${baseUrl}?view=nolan`;
@@ -2076,6 +2150,7 @@ function downloadStandaloneIndex() {
                           `}
 
                           <button class="btn btn-amber" style="padding:6px 10px; font-size:0.78rem;"
+
                             onclick="adminGradeWithGemini('${c.id}', this)">
                             ✨ Grade w/ Gemini 3.8 Flash
                           </button>
@@ -2085,6 +2160,7 @@ function downloadStandaloneIndex() {
                             📄 Doc
                           </button>
                         </div>
+
                       </td>
                     </tr>
                   `;
@@ -2111,10 +2187,12 @@ function downloadStandaloneIndex() {
 
       google.script.run
         .withSuccessHandler(res => {
+
           if (res && res.ok) {
             course.dailyDone = res.dailyDone;
             course.status = res.status;
             course.dayStatus = res.dayStatus || course.dayStatus;
+
             renderApp();
           } else {
             alert('Write-back failed: ' + (res && res.error ? res.error : 'Unknown error'));
@@ -2122,10 +2200,12 @@ function downloadStandaloneIndex() {
           }
         })
         .withFailureHandler(err => {
+
           alert('Write-back error: ' + err.message);
           if (btnEl) btnEl.disabled = false;
         })
         .updateMissionStatus({
+
           id: course.id,
           rowIndex: course.rowIndex,
           cadet: course.cadet,
@@ -2136,9 +2216,12 @@ function downloadStandaloneIndex() {
         });
     }
 
+
     function launchFullScreenDoc(courseId, docType, btnEl) {
+
       const courses = (PORTAL_DATA && PORTAL_DATA.courses) ? PORTAL_DATA.courses : [];
       const course = courses.find(c => c.id === courseId);
+
       if (!course) return;
 
       const origText = btnEl.innerText;
@@ -2148,6 +2231,8 @@ function downloadStandaloneIndex() {
       google.script.run
         .withSuccessHandler(res => {
           btnEl.disabled = false;
+
+
           btnEl.innerText = origText;
           if (res && res.ok && res.url) {
             if (docType === 'Quiz') course.quizUrl = res.url;
@@ -2158,12 +2243,17 @@ function downloadStandaloneIndex() {
           }
         })
         .withFailureHandler(err => {
+
           btnEl.disabled = false;
           btnEl.innerText = origText;
+
           alert('Document error: ' + err.message);
+
         })
         .resolveOrCreateAssignmentDoc({
+
           id: course.id,
+
           cadet: course.cadet,
           subject: course.subject,
           week: SELECTED_WEEK,
@@ -2175,6 +2265,7 @@ function downloadStandaloneIndex() {
     }
 
     function sendTutorQuestion(courseId) {
+
       const input = document.getElementById('tutorInput');
       const question = input ? input.value.trim() : '';
       if (!question) return;
