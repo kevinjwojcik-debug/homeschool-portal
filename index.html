@@ -585,7 +585,7 @@
   // STANDALONE GITHUB PAGES / WEB HOSTING FETCH POLYFILL FOR GOOGLE APPS SCRIPT
   // =========================================================================
   const GAS_EXEC_URL =
-  'https://script.google.com/macros/s/AKfycbzZCfCca0B87v6KaDPwny9NcVHc4d1HNia26tP_Y8cQwNRJXX6dsKaNhu7Bxt_8oLXU/exec';
+  'https://script.google.com/macros/s/' + 'AKfycbzZCfCca0B87v6KaDPwny9NcVHc4d1HNia26tP_Y8cQwNRJXX6dsKaNhu7Bxt_8oLXU/' + 'exec';
 
   if (typeof window.google === 'undefined' || !window.google.script) {
   function createGasRunner(successHandler, failureHandler) {
@@ -1153,11 +1153,11 @@ function renderApp() {
     renderHeader();
       try {
           if (CURRENT_VIEW === 'ash') {
-                document.title = (STUDENT_SUBVIEW === 'exam_prep') ? 'Ash Exam Prep - Wojcik Homeschool' : 'Ash Portal - Wojcik Homeschool';
+                document.title = (STUDENT_SUBVIEW === 'exam_prep') ? 'Ash Exam ' + 'Prep - Wojcik Homeschool' : 'Ash Portal - Wojcik Homeschool';
                     } else if (CURRENT_VIEW === 'nolan') {
-                          document.title = (STUDENT_SUBVIEW === 'exam_prep') ? 'Nolan Exam Prep - Wojcik Homeschool' : 'Nolan Portal - Wojcik Homeschool';
+                          document.title = (STUDENT_SUBVIEW === 'exam_prep') ? 'Nolan Exam Prep - Wojcik Homeschool' : 'Nolan Portal ' + '- Wojcik Homeschool';
                               } else {
-                                    document.title = 'Homeschool Executive Overview & Compliance';
+                                    document.title = 'Homeschool Executive ' + 'Overview & Compliance';
                                         }
                                           } catch (e) {}
 
@@ -1207,11 +1207,11 @@ function renderApp() {
 
           <div class="selector-bar">
             <button class="btn btn-exam-toggle ${isExamMode ? 'active-exam' : ''}" onclick="toggleStudentExamHub()">
-              ${isExamMode ? '📚 Return to Daily Class Workspace' : '🎯 Semester Exam Prep (Day 1–Today)'}
+              ${isExamMode ? '📚 Return to Daily Class Workspace' : '🎯 Semester ' + 'Exam Prep (Day 1–Today)'}
             </button>
 
 
-1215
+
             <div class="control-group">
               <span class="control-label">Select Class (7 Courses)</span>
               <select onchange="onCourseChange(this.value)">
@@ -1249,7 +1249,6 @@ function renderApp() {
           </div>
         `;
 
-1240
       } else {
         header.innerHTML = `
           <div>
@@ -1712,28 +1711,36 @@ function downloadStandaloneIndex() {
 
 
       const rawPlan = (course.dailyPlan && course.dailyPlan[SELECTED_DAY]) || course.missionTask; const dayPlanText = (rawPlan && typeof rawPlan === 'object') ? (rawPlan.task || rawPlan.plan || rawPlan.title || rawPlan.summary || '') : (rawPlan || '');
-      const isTodayDone = Boolean(course.dayStatus && course.dayStatus[SELECTED_DAY]) || Boolean(course.dailyDone);
 
+      const isTodayDone = Boolean(course.dayStatus && course.dayStatus[SELECTED_DAY]);
 
       const examDiag = getCourseExamDiagnostic(course);
 
 
 
-const _dayNamesMap = { D1: 'Monday (Day 1)', D2: 'Tuesday (Day 2)', D3: 'Wednesday (Day 3)', D4: 'Thursday (Day 4)', D5: 'Friday (Day 5)' }; const _schedDays = Array.isArray(course.scheduledDays) ? course.scheduledDays : ['D1','D2','D3','D4','D5']; const _isSchedDay = _schedDays.indexOf(SELECTED_DAY) !== -1; const _dayRead = (course.dailyReading && course.dailyReading[SELECTED_DAY]) ? course.dailyReading[SELECTED_DAY] : (course.readingText || course.missionTask || 'Reading materials for this day are being prepared.'); const _dayWork = (course.dailyWorksheet && course.dailyWorksheet[SELECTED_DAY]) ? course.dailyWorksheet[SELECTED_DAY] : (course.worksheetText || _dayRead); let activeContentText = _dayRead; if (DOC_TAB_MODE === 'worksheet') activeContentText = _dayWork; if (DOC_TAB_MODE === 'quiz') activeContentText = course.quizText || 'Friday Mastery Quiz questions open in Google Docs.'; const _dayDocUrl = (course.dailyDocUrls && course.dailyDocUrls[SELECTED_DAY]) ? course.dailyDocUrls[SELECTED_DAY] : (_isSchedDay ? (course.docUrl || '') : ''); const _quizDocUrl = course.quizUrl || ''; course.submittedLink = (DOC_TAB_MODE === 'quiz' || (SELECTED_DAY === 'D5' && !_isSchedDay)) ? (_quizDocUrl || _dayDocUrl) : (_dayDocUrl || _quizDocUrl); window.openCourseDoc = function(courseId, forceType) { const c = (PORTAL_DATA && Array.isArray(PORTAL_DATA.courses)) ? PORTAL_DATA.courses.find(x => x.id === courseId) : course; if (!c) return; const isQuiz = (forceType === 'Quiz') || (DOC_TAB_MODE === 'quiz'); const sDays = Array.isArray(c.scheduledDays) ? c.scheduledDays : ['D1','D2','D3','D4','D5']; if (!isQuiz && sDays.indexOf(SELECTED_DAY) === -1) { alert(c.subject + ' is scheduled ' + (c.daysPerWeek || sDays.length) + ' days/week (' + sDays.join(', ') + '). There is no daily worksheet scheduled on ' + (_dayNamesMap[SELECTED_DAY] || SELECTED_DAY) + '. Use the "🏆 Open Friday Quiz Google Doc" button to open the weekly quiz!'); return; } const directUrl = isQuiz ? (c.quizUrl || '') : ((c.dailyDocUrls && c.dailyDocUrls[SELECTED_DAY]) ? c.dailyDocUrls[SELECTED_DAY] : ''); const linkBox = document.getElementById('submission-link-input'); if (directUrl && directUrl.indexOf('docs.google.com/') !== -1) { if (linkBox) linkBox.value = directUrl; window.open(directUrl, '_blank'); return; } const win = window.open('about:blank', '_blank'); google.script.run.withSuccessHandler(function(res) { if (res && res.ok && res.url) { if (isQuiz) { c.quizUrl = res.url; } else { if (!c.dailyDocUrls) c.dailyDocUrls = {}; c.dailyDocUrls[SELECTED_DAY] = res.url; } if (linkBox) linkBox.value = res.url; if (win) win.location.href = res.url; else window.open(res.url, '_blank'); } else { if (win) win.close(); alert((res && res.error) ? res.error : 'Could not open Google Doc for this day.'); } }).resolveOrCreateAssignmentDoc({ id: c.id, cadet: c.cadet, subject: c.subject, week: SELECTED_WEEK, day: SELECTED_DAY, docType: isQuiz ? 'Quiz' : 'Assignment' }); }; setTimeout(function() { try { const btns = Array.from(document.querySelectorAll('button')); const docBtn = btns.find(b => /Open Full-Screen Editable Google Doc|Open .* Google Doc/i.test(b.textContent || '')); if (docBtn) { if (DOC_TAB_MODE === 'quiz') { docBtn.innerHTML = '🏆 Open Friday Quiz Google Doc'; docBtn.onclick = function() { window.openCourseDoc(course.id, 'Quiz'); }; } else if (!_isSchedDay) { docBtn.innerHTML = '🌿 Off Day (' + (_schedDays.length) + ' Days/Wk Schedule)'; docBtn.style.opacity = '0.65'; } else { docBtn.innerHTML = '📝 Open ' + (_dayNamesMap[SELECTED_DAY] || SELECTED_DAY) + ' Google Doc'; docBtn.style.opacity = '1'; docBtn.onclick = function() { window.openCourseDoc(course.id, 'Assignment'); }; } if (!document.getElementById('dedicated-friday-quiz-doc-btn')) { const qBtn = document.createElement('button'); qBtn.id = 'dedicated-friday-quiz-doc-btn'; qBtn.className = docBtn.className; qBtn.style.cssText = 'background:#b45309;color:#fff;border:none;cursor:pointer;'; qBtn.innerHTML = '🏆 Open Friday Quiz Google Doc'; qBtn.onclick = function() { DOC_TAB_MODE = 'quiz'; renderStudentPortal(); window.openCourseDoc(course.id, 'Quiz'); }; docBtn.parentNode.insertBefore(qBtn, docBtn.nextSibling); } } const dayMapShort = { 'Monday (Day 1)': 'D1', 'Tuesday (Day 2)': 'D2', 'Wednesday (Day 3)': 'D3', 'Thursday (Day 4)': 'D4', 'Friday (Day 5 — Quiz)': 'D5' }; btns.forEach(b => { const txt = (b.textContent || '').trim(); Object.keys(dayMapShort).forEach(label => { if (txt.indexOf(label.split(' ')[0]) === 0 && txt.indexOf('Day ') !== -1) { const dKey = dayMapShort[label]; if (dKey && _schedDays.indexOf(dKey) === -1) { if (txt.indexOf('Off') === -1) b.textContent = label.split(' (')[0] + ' (' + dKey + ' — Off)'; b.style.opacity = (SELECTED_DAY === dKey) ? '0.9' : '0.5'; } } }); }); } catch (e) {} }, 0);
+
+
+
+
+const _nbMap = {"N_BIBLE":"https://notebook.google.com/notebook/3d0aea63-e089-42eb-9ba6-351c41d3c790","N_PREALG":"https://notebook.google.com/notebook/8214182b-89a2-450e-88e9-18cc6cf24aa2","N_ANIMAL":"https://notebook.google.com/notebook/f8d30132-7780-4008-91ba-0432ae96e2b0","N_HIST":"https://notebook.google.com/notebook/8e68c8a1-ed0f-428d-ac17-5b6cc9600c6e","N_LOGIC":"https://notebook.google.com/notebook/6c80cf2e-37a5-47b7-a097-6b8f678debfe","N_SHAK":"https://notebook.google.com/notebook/1f5a74bf-fc64-4bf7-bd26-3c4884899b60","N_HOME":"https://notebook.google.com/notebook/cfc2c5b5-92ef-480c-99fa-81658ffe3def","N_LIFE":"https://notebook.google.com/notebook/49113e02-1bc4-46ec-b3dd-51ea042dc400","A_ALG1":"https://notebook.google.com/notebook/c0189e95-0577-4806-adbc-850e8f0f27dd","A_ANAT":"https://notebook.google.com/notebook/cab526cf-0922-467a-ae73-7ae09cb97c46","A_BIBLE":"https://notebook.google.com/notebook/a3a00a98-b22d-496f-88cc-70dd17bc7178","A_HIST":"https://notebook.google.com/notebook/bafb5327-7165-4cf5-bcae-2542bea4911c","A_PHOTO":"https://notebook.google.com/notebook/483c1948-23b4-4d95-baa0-f017fb5c5b27","A_SHAK":"https://notebook.google.com/notebook/1f5a74bf-fc64-4bf7-bd26-3c4884899b60","A_HOME":"https://notebook.google.com/notebook/cfc2c5b5-92ef-480c-99fa-81658ffe3def","A_LIFE":"https://notebook.google.com/notebook/49113e02-1bc4-46ec-b3dd-51ea042dc400"}; const _nbNames = {"N_BIBLE":"📖 Nolan- Bible","N_PREALG":"📚 Nolan Pre Algebra","N_ANIMAL":"🐖 Nolan Animal Science","N_HIST":"📖 Nolan History","N_LOGIC":"🎯 Nolan Logic","N_SHAK":"📜 A & N Shakespeare","N_HOME":"🏫 A&N Homesteading","N_LIFE":"📋 A&N Life Skills","A_ALG1":"📐 Ash Algebra","A_ANAT":"💀 Ash- Anatomy and Physiology","A_BIBLE":"📚 Ash Bible","A_HIST":"📖 Ash History","A_PHOTO":"📷 Ash Photography","A_SHAK":"📜 A & N Shakespeare","A_HOME":"🏫 A&N Homesteading","A_LIFE":"📋 A&N Life Skills"}; if (_nbMap[course.id]) { if (!course.notebookUrl) course.notebookUrl = _nbMap[course.id]; if (!course.notebookName) course.notebookName = _nbNames[course.id]; } if (course._rawFeedback === undefined) course._rawFeedback = course.feedback || ""; course.dayFeedback = course.dayFeedback || {}; course.feedback = (course.dayFeedback[SELECTED_DAY] !== undefined) ? course.dayFeedback[SELECTED_DAY] : (isTodayDone ? course._rawFeedback : ""); const _dayNamesMap = { D1: 'Monday (Day 1)', D2: 'Tuesday (Day 2)', D3: 'Wednesday (Day 3)', D4: 'Thursday (Day 4)', D5: 'Friday (Day 5)' }; const _schedDays = Array.isArray(course.scheduledDays) ? course.scheduledDays : ['D1','D2','D3','D4','D5']; const _isSchedDay = _schedDays.indexOf(SELECTED_DAY) !== -1; const _dayRead = (course.dailyReading && course.dailyReading[SELECTED_DAY]) ? course.dailyReading[SELECTED_DAY] : (course.readingText || course.missionTask || 'Reading materials for this day are being prepared.'); const _dayWork = (course.dailyWorksheet && course.dailyWorksheet[SELECTED_DAY]) ? course.dailyWorksheet[SELECTED_DAY] : (course.worksheetText || _dayRead); let activeContentText = _dayRead; if (DOC_TAB_MODE === 'worksheet') activeContentText = _dayWork; if (DOC_TAB_MODE === 'quiz') activeContentText = course.quizText || 'Friday Mastery Quiz questions open in Google Docs.'; const _dayDocUrl = (course.dailyDocUrls && course.dailyDocUrls[SELECTED_DAY]) ? course.dailyDocUrls[SELECTED_DAY] : (_isSchedDay ? (course.docUrl || '') : ''); const _quizDocUrl = course.quizUrl || ''; course.submittedLink = (DOC_TAB_MODE === 'quiz' || (SELECTED_DAY === 'D5' && !_isSchedDay)) ? (_quizDocUrl || _dayDocUrl) : (_dayDocUrl || _quizDocUrl); window.openCourseDoc = function(courseId, forceType) { const c = (PORTAL_DATA && Array.isArray(PORTAL_DATA.courses)) ? PORTAL_DATA.courses.find(x => x.id === courseId) : course; if (!c) return; const isQuiz = (forceType === 'Quiz') || (DOC_TAB_MODE === 'quiz'); const sDays = Array.isArray(c.scheduledDays) ? c.scheduledDays : ['D1','D2','D3','D4','D5']; if (!isQuiz && sDays.indexOf(SELECTED_DAY) === -1) { alert(c.subject + ' is scheduled ' + (c.daysPerWeek || sDays.length) + ' days/week (' + sDays.join(', ') + '). There is no daily worksheet scheduled on ' + (_dayNamesMap[SELECTED_DAY] || SELECTED_DAY) + '. Use the "🏆 Open Friday Quiz Google Doc" button to open the weekly quiz!'); return; } const directUrl = isQuiz ? (c.quizUrl || '') : ((c.dailyDocUrls && c.dailyDocUrls[SELECTED_DAY]) ? c.dailyDocUrls[SELECTED_DAY] : ''); const linkBox = document.getElementById('submission-link-input'); if (directUrl && directUrl.indexOf('docs.google.com/') !== -1) { if (linkBox) linkBox.value = directUrl; window.open(directUrl, '_blank'); return; } const win = window.open('about:blank', '_blank'); google.script.run.withSuccessHandler(function(res) { if (res && res.ok && res.url) { if (isQuiz) { c.quizUrl = res.url; } else { if (!c.dailyDocUrls) c.dailyDocUrls = {}; c.dailyDocUrls[SELECTED_DAY] = res.url; } if (linkBox) linkBox.value = res.url; if (win) win.location.href = res.url; else window.open(res.url, '_blank'); } else { if (win) win.close(); alert((res && res.error) ? res.error : 'Could not open Google Doc for this day.'); } }).resolveOrCreateAssignmentDoc({ id: c.id, cadet: c.cadet, subject: c.subject, week: SELECTED_WEEK, day: SELECTED_DAY, docType: isQuiz ? 'Quiz' : 'Assignment' }); }; setTimeout(function() { try { const btns = Array.from(document.querySelectorAll('button')); const docBtn = btns.find(b => /Open Full-Screen Editable Google Doc|Open .* Google Doc/i.test(b.textContent || '')); if (docBtn) { if (DOC_TAB_MODE === 'quiz') { docBtn.innerHTML = '🏆 Open Friday Quiz Google Doc'; docBtn.onclick = function() { window.openCourseDoc(course.id, 'Quiz'); }; } else if (!_isSchedDay) { docBtn.innerHTML = '🌿 Off Day (' + (_schedDays.length) + ' Days/Wk Schedule)'; docBtn.style.opacity = '0.65'; } else { docBtn.innerHTML = '📝 Open ' + (_dayNamesMap[SELECTED_DAY] || SELECTED_DAY) + ' Google Doc'; docBtn.style.opacity = '1'; docBtn.onclick = function() { window.openCourseDoc(course.id, 'Assignment'); }; } if (!document.getElementById('dedicated-friday-quiz-doc-btn')) { const qBtn = document.createElement('button'); qBtn.id = 'dedicated-friday-quiz-doc-btn'; qBtn.className = docBtn.className; qBtn.style.cssText = 'background:#b45309;color:#fff;border:none;cursor:pointer;'; qBtn.innerHTML = '🏆 Open Friday Quiz Google Doc'; qBtn.onclick = function() { DOC_TAB_MODE = 'quiz'; renderStudentPortal(); window.openCourseDoc(course.id, 'Quiz'); }; docBtn.parentNode.insertBefore(qBtn, docBtn.nextSibling); } if (course.notebookUrl && docBtn && docBtn.parentNode && !Array.from(docBtn.parentNode.querySelectorAll('a')).some(function(a){ return /NotebookLM/i.test(a.textContent || ''); })) { const nbBtn = document.createElement('a'); nbBtn.id = 'dedicated-notebooklm-btn'; nbBtn.className = 'btn btn-secondary'; nbBtn.href = course.notebookUrl; nbBtn.target = '_blank'; nbBtn.innerHTML = '🧠 Open NotebookLM'; docBtn.parentNode.appendChild(nbBtn); } else if (course.notebookUrl) { const exNb = document.getElementById('dedicated-notebooklm-btn'); if (exNb) exNb.href = course.notebookUrl; } } const dayMapShort = { 'Monday (Day 1)': 'D1', 'Tuesday (Day 2)': 'D2', 'Wednesday (Day 3)': 'D3', 'Thursday (Day 4)': 'D4', 'Friday (Day 5 — Quiz)': 'D5' }; btns.forEach(b => { const txt = (b.textContent || '').trim(); Object.keys(dayMapShort).forEach(label => { if (txt.indexOf(label.split(' ')[0]) === 0 && txt.indexOf('Day ') !== -1) { const dKey = dayMapShort[label]; if (dKey && _schedDays.indexOf(dKey) === -1) { if (txt.indexOf('Off') === -1) b.textContent = label.split(' (')[0] + ' (' + dKey + ' — Off)'; b.style.opacity = (SELECTED_DAY === dKey) ? '0.9' : '0.5'; } } }); }); } catch (e) {} }, 0);
 const chatHistory = TUTOR_HISTORY[course.id] || [
         {
+
           role: 'tutor',
           text: isAsh
 
             ? `Hi Ash! 🎀 Welcome to ${course.subject} (${SELECTED_WEEK}, ${DAY_LABELS[SELECTED_DAY]}). Ask me any question about today's reading or worksheet and we'll work through it step-by-step!`
             : `Hey Nolan! 🦆 Ready for ${course.subject} (${SELECTED_WEEK}, ${DAY_LABELS[SELECTED_DAY]}). Let me know what part of today's reading or problem set you want to tackle!`
+
         }
+
       ];
 
 
       container.innerHTML = `
 
         <!-- 5-DAY PROGRESS BAR FOR THIS CLASS -->
+
 
         <div class="day-strip">
 
@@ -1742,6 +1749,7 @@ const chatHistory = TUTOR_HISTORY[course.id] || [
             const isSel = dKey === SELECTED_DAY;
             return `
               <div class="day-pill ${isSel ? 'active' : ''} ${dDone ? 'done-day' : ''}" onclick="onDayChange('${dKey}')">
+
                 ${dDone ? '✓ ' : ''}${DAY_LABELS[dKey]}
               </div>
             `;
@@ -2101,7 +2109,7 @@ const chatHistory = TUTOR_HISTORY[course.id] || [
               <tbody>
                 ${courses.map(c => {
                   const dMap = c.dayStatus || {};
-                  const todayDone = Boolean(dMap[SELECTED_DAY]) || Boolean(c.dailyDone);
+                  const todayDone = Boolean(dMap[SELECTED_DAY]);
                   const completedDaysCount = ['D1','D2','D3','D4','D5'].filter(k => dMap[k]).length;
                   const examDiag = getCourseExamDiagnostic(c);
                   return `
@@ -2323,7 +2331,7 @@ const chatHistory = TUTOR_HISTORY[course.id] || [
         .withSuccessHandler(res => {
           btnEl.disabled = false;
           if (res && res.ok) {
-            course.dailyDone = true;
+            course.dayStatus = res.dayStatus || course.dayStatus || {}; course.dayStatus[SELECTED_DAY] = true; course.dailyDone = Boolean(res.dailyDone); course.dayFeedback = course.dayFeedback || {}; course.dayFeedback[SELECTED_DAY] = res.feedback || ''; course._rawFeedback = res.feedback || course._rawFeedback || ''; if (typeof linkVal !== 'undefined') { course.dayLinks = course.dayLinks || {}; course.dayLinks[SELECTED_DAY] = linkVal; }
             course.score = res.score || course.score;
             course.feedback = res.feedback || '';
             course.submittedLink = linkVal;
@@ -2366,7 +2374,7 @@ const chatHistory = TUTOR_HISTORY[course.id] || [
         .withSuccessHandler(res => {
           btnEl.disabled = false;
           if (res && res.ok) {
-            course.dailyDone = true;
+            course.dayStatus = res.dayStatus || course.dayStatus || {}; course.dayStatus[SELECTED_DAY] = true; course.dailyDone = Boolean(res.dailyDone); course.dayFeedback = course.dayFeedback || {}; course.dayFeedback[SELECTED_DAY] = res.feedback || ''; course._rawFeedback = res.feedback || course._rawFeedback || ''; if (typeof linkVal !== 'undefined') { course.dayLinks = course.dayLinks || {}; course.dayLinks[SELECTED_DAY] = linkVal; }
             course.score = res.score || course.score;
             course.feedback = res.feedback || '';
             course.dayStatus = res.dayStatus || course.dayStatus;
